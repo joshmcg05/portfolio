@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Astro & Landscape Photography</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --glass-blur:blur(28px) saturate(180%);
+  --glass-inner-top:inset 0 1.5px 0 rgba(255,255,255,0.28);
+  --glass-inner-bot:inset 0 -1px 0 rgba(0,0,0,0.18);
+  --glass-shadow-md:0 8px 32px rgba(0,0,0,0.4),var(--glass-inner-top),var(--glass-inner-bot);
+  --deep:#03080f;
+  --star-white:rgba(255,255,255,0.94);
+  --muted:rgba(255,255,255,0.52);
+}
+html{scroll-behavior:smooth}
+body{background:var(--deep);color:var(--star-white);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden;min-height:100vh}
+
+/* NAV */
+nav{
+  position:fixed;top:1.5rem;left:50%;transform:translateX(-50%);
+  z-index:100;display:flex;align-items:center;
+  background:rgba(255,255,255,0.10);border:none;
+  backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  border-radius:100px;padding:0.4rem 0.6rem;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1.5px 0 rgba(255,255,255,0.22),inset 0 -1px 0 rgba(0,0,0,0.18);
+  white-space:nowrap;
+}
+nav a{
+  font-size:0.72rem;font-weight:400;letter-spacing:0.13em;text-transform:uppercase;
+  color:rgba(255,255,255,0.72);text-decoration:none;padding:0.4rem 1rem;
+  position:relative;transition:color .25s ease;
+}
+nav a::after{
+  content:'';position:absolute;bottom:2px;left:1rem;right:1rem;
+  height:1px;background:rgba(255,255,255,0.85);
+  transform:scaleX(0);transform-origin:center;
+  transition:transform .3s cubic-bezier(.25,.46,.45,.94);
+}
+nav a:hover{color:#fff}
+nav a:hover::after{transform:scaleX(1)}
+.nav-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,0.22);margin:0 .15rem;flex-shrink:0}
+
+/* HERO */
+#hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#hero-img{
+  position:absolute;inset:0;background:center 30%/cover no-repeat;background-color:#050c1a;
+  transform-origin:center top;will-change:opacity,transform;
+}
+#hero-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(3,8,15,0.10) 0%,rgba(3,8,15,0.04) 35%,rgba(3,8,15,0.52) 75%,rgba(3,8,15,1) 100%);
+}
+#hero-content{
+  position:relative;z-index:2;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:1.5rem;padding:2rem;
+  will-change:transform,opacity;
+}
+.hero-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(4.5rem,11.25vw,10rem);font-weight:300;letter-spacing:0.12em;line-height:1;
+  background:linear-gradient(160deg,#fff 0%,rgba(200,218,255,0.92) 40%,rgba(255,255,255,0.85) 70%,rgba(180,210,255,0.95) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 2px 32px rgba(80,120,255,0.25));padding:0 0.05em;
+}
+.hero-name em{font-style:italic;font-weight:300}
+.hero-sub{font-size:clamp(0.72rem,1.4vw,0.88rem);font-weight:300;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.62);line-height:1.6}
+
+/* SCROLL HINT */
+.scroll-hint{
+  position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:50;
+  display:flex;flex-direction:column;align-items:center;gap:0.6rem;
+  opacity:1;transition:opacity 0.4s ease;
+}
+.scroll-hint.hidden{opacity:0;pointer-events:none}
+.scroll-hint-label{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.4);writing-mode:vertical-rl}
+.scroll-hint-line{width:1px;height:60px;background:linear-gradient(to bottom,rgba(255,255,255,0.5),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.35}50%{opacity:.9}}
+
+/* GALLERY */
+#gallery{background:var(--deep);padding:5rem 0 6rem;position:relative;z-index:1}
+.section-label{text-align:center;font-size:.68rem;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);margin-bottom:2.25rem}
+
+/* Genre tabs */
+.genre-tabs{display:flex;align-items:center;justify-content:center;gap:.6rem;margin-bottom:3rem;padding:0 1.5rem;flex-wrap:wrap}
+.genre-btn{
+  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.18);
+  backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);
+  color:rgba(255,255,255,0.58);font-family:'Inter',sans-serif;font-size:.7rem;font-weight:400;
+  letter-spacing:.18em;text-transform:uppercase;padding:.5rem 1.3rem;border-radius:100px;cursor:pointer;
+  transition:all .25s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,0.1),0 4px 16px rgba(0,0,0,0.25);
+}
+.genre-btn:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.85)}
+.genre-btn.active{
+  background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.5);color:#fff;
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.28),0 0 22px rgba(140,175,255,0.14),0 4px 16px rgba(0,0,0,0.3);
+}
+
+/* ── CAROUSEL — variable width, fixed height ── */
+.carousel-rows{display:flex;flex-direction:column;gap:1.75rem}
+.carousel-outer{position:relative;overflow:hidden;padding:1rem 0;cursor:default}
+.carousel-outer:hover .carousel-arrow{opacity:1}
+
+.carousel-track{
+  display:flex;
+  align-items:stretch;   /* all slides share same height */
+  gap:1rem;
+  width:max-content;
+  will-change:transform;
+}
+
+/* Each slide: fixed height, width set by aspect-ratio via JS */
+.slide{
+  flex:0 0 auto;
+  height:340px;
+  /* width driven by aspect-ratio attribute on each element */
+  border-radius:12px;overflow:hidden;position:relative;cursor:pointer;
+  transition:transform .42s cubic-bezier(.25,.46,.45,.94),box-shadow .4s ease,filter .4s ease;
+  box-shadow:0 4px 28px rgba(0,0,0,0.55);
+  border:1px solid rgba(255,255,255,0.08);
+  filter:brightness(0.88);
+}
+.slide:hover{
+  transform:scale(1.045) translateY(-6px);
+  box-shadow:0 18px 52px rgba(0,0,0,0.75),0 0 0 1px rgba(140,175,255,0.28);
+  filter:brightness(1.05);
+  z-index:10;
+}
+
+.slide-img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .6s ease;
+  pointer-events:none;
+  /* Placeholder: stretched gradient bg shown before real image loads */
+  background-size:cover;background-position:center;
+}
+.slide:hover .slide-img{transform:scale(1.04)}
+
+/* Caption overlay */
+.slide-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(3,8,20,0.82) 0%,rgba(3,8,20,0.2) 40%,transparent 65%);
+  opacity:0;transition:opacity .32s ease;
+  display:flex;flex-direction:column;justify-content:flex-end;padding:1.1rem 1.2rem;
+  gap:0.3rem;
+}
+.slide:hover .slide-overlay{opacity:1}
+.slide-caption{font-size:.72rem;letter-spacing:.1em;color:rgba(255,255,255,.9);font-weight:400;text-transform:uppercase}
+.slide-meta{font-size:.62rem;letter-spacing:.08em;color:rgba(255,255,255,.5);font-weight:300}
+
+/* Orientation badge */
+.slide-badge{
+  position:absolute;top:0.75rem;right:0.75rem;
+  background:rgba(255,255,255,0.10);
+  border:1px solid rgba(255,255,255,0.22);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-radius:100px;padding:0.25rem 0.65rem;
+  font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(255,255,255,0.65);
+  opacity:0;transition:opacity .32s ease;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.slide:hover .slide-badge{opacity:1}
+
+/* Arrow buttons */
+.carousel-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:20;
+  width:44px;height:44px;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.28);
+  background:rgba(8,16,35,0.72);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  color:rgba(255,255,255,0.85);font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;opacity:0;
+  transition:opacity .28s ease,background .2s,border-color .2s;
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.18),0 4px 24px rgba(0,0,0,.45);
+}
+.carousel-arrow:hover{background:rgba(30,55,110,0.82);border-color:rgba(255,255,255,.46)}
+.arrow-prev{left:1rem}
+.arrow-next{right:1rem}
+
+/* Placeholder gradient fills (replaced by real images) */
+.ph-astro-p{background:linear-gradient(160deg,#060d20,#112045,#0a1530)}
+.ph-astro-l{background:linear-gradient(145deg,#040a18,#0c1a3a,#162848)}
+.ph-astro-s{background:linear-gradient(150deg,#070d22,#0f1e40,#0a1530)}
+.ph-land-p{background:linear-gradient(160deg,#0a1a08,#1a3a14,#0d2008)}
+.ph-land-l{background:linear-gradient(145deg,#081208,#162c10,#1e3818)}
+.ph-land-s{background:linear-gradient(150deg,#0a1608,#183010,#122008)}
+.ph-aurora-p{background:linear-gradient(160deg,#050f18,#0a2830,#0f1e3a)}
+.ph-aurora-l{background:linear-gradient(145deg,#040e12,#082c22,#0a2238)}
+.ph-aurora-s{background:linear-gradient(150deg,#050c16,#0c2828,#082035)}
+.ph-longexp-p{background:linear-gradient(160deg,#150f08,#321e0e,#1e1408)}
+.ph-longexp-l{background:linear-gradient(145deg,#100b06,#261608,#1c1008)}
+.ph-longexp-s{background:linear-gradient(150deg,#120d06,#281808,#181008)}
+
+/* Star dots overlay on placeholders */
+.slide-img::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%,rgba(255,255,255,.8) 0%,transparent 100%),
+    radial-gradient(1px 1px at 28% 52%,rgba(255,255,255,.6) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 48% 15%,rgba(255,255,255,.9) 0%,transparent 100%),
+    radial-gradient(1px 1px at 65% 70%,rgba(255,255,255,.55) 0%,transparent 100%),
+    radial-gradient(1px 1px at 80% 35%,rgba(255,255,255,.7) 0%,transparent 100%),
+    radial-gradient(1px 1px at 20% 80%,rgba(255,255,255,.5) 0%,transparent 100%),
+    radial-gradient(2px 2px at 55% 55%,rgba(170,195,255,.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 75% 10%,rgba(255,255,255,.75) 0%,transparent 100%),
+    radial-gradient(1px 1px at 38% 88%,rgba(255,255,255,.45) 0%,transparent 100%),
+    radial-gradient(1px 1px at 90% 60%,rgba(255,255,255,.5) 0%,transparent 100%);
+}
+
+/* ABOUT */
+#about{padding:5rem 2rem 6rem;max-width:700px;margin:0 auto;text-align:center;position:relative;z-index:1}
+.about-glass{
+  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.22);
+  backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%);
+  border-radius:22px;padding:3rem 2.5rem;
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.20),inset 0 -1px 0 rgba(0,0,0,0.2),0 24px 64px rgba(0,0,0,.45);
+  position:relative;overflow:hidden;
+}
+.about-glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(140,175,255,0.55),transparent)}
+.about-btn{
+  display:inline-block;font-family:'Cormorant Garamond',serif;
+  font-size:1.9rem;font-weight:300;font-style:italic;
+  color:rgba(200,218,255,0.95);text-decoration:none;margin-bottom:1.4rem;
+  position:relative;transition:color .25s ease;letter-spacing:0.02em;
+}
+.about-btn::after{
+  content:'';position:absolute;bottom:-3px;left:0;right:0;
+  height:1px;background:rgba(200,218,255,0.45);
+  transform:scaleX(0.35);transform-origin:left;
+  transition:transform .35s cubic-bezier(.25,.46,.45,.94),background .25s;
+}
+.about-btn:hover{color:#fff}
+.about-btn:hover::after{transform:scaleX(1);background:rgba(255,255,255,0.7)}
+.about-glass p{font-size:.88rem;line-height:1.95;color:rgba(255,255,255,0.5);font-weight:300}
+
+/* FOOTER */
+.footer-main{
+  padding:4rem 4rem 2.5rem;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:3rem;
+  position:relative;z-index:1;
+}
+.footer-left .footer-location{font-size:.65rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.7rem}
+.footer-left .footer-email{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;font-style:italic;color:rgba(190,210,255,0.85);text-decoration:none;transition:color .22s;letter-spacing:0.02em;display:block}
+.footer-left .footer-email:hover{color:#fff}
+.footer-center-label{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:1rem;text-align:center}
+.footer-index{list-style:none;display:flex;flex-direction:column;gap:.5rem;align-items:center}
+.footer-index a{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,0.42);text-decoration:none;transition:color .2s;position:relative}
+.footer-index a::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:rgba(255,255,255,0.5);transform:scaleX(0);transform-origin:center;transition:transform .28s ease}
+.footer-index a:hover{color:rgba(255,255,255,0.78)}
+.footer-index a:hover::after{transform:scaleX(1)}
+.footer-right{display:flex;flex-direction:column;align-items:flex-end;gap:1rem}
+.footer-social-label{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,0.25)}
+.social-btns{display:flex;gap:.65rem}
+.social-btn{
+  width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.20);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  color:rgba(255,255,255,0.65);text-decoration:none;
+  transition:all .25s ease;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.15),0 4px 16px rgba(0,0,0,0.3);
+}
+.social-btn:hover{background:rgba(255,255,255,0.16);border-color:rgba(255,255,255,0.42);color:#fff;box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.25),0 0 18px rgba(140,175,255,0.15),0 4px 20px rgba(0,0,0,0.4);transform:translateY(-2px)}
+.social-btn svg{width:18px;height:18px;fill:currentColor}
+.footer-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);margin:0 4rem}
+.footer-copy{padding:1.25rem 4rem 2rem;text-align:center;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,0.2)}
+.footer-copy a{color:rgba(140,175,255,.45);text-decoration:none;transition:color .2s}
+.footer-copy a:hover{color:rgba(170,200,255,.8)}
+@media(max-width:700px){
+  .footer-main{grid-template-columns:1fr;padding:3rem 2rem 2rem;gap:2.5rem}
+  .footer-right{align-items:flex-start}
+  .footer-divider,.footer-copy{margin:0 2rem}
+}
+@media(prefers-reduced-motion:reduce){.scroll-hint-line{animation:none}}
+</style>
+</head>
+<body>
+
+<nav aria-label="Site navigation">
+  <a href="#hero">Home</a>
+  <div class="nav-dot" aria-hidden="true"></div>
+  <a href="#gallery">Gallery</a>
+  <div class="nav-dot" aria-hidden="true"></div>
+  <a href="#about">About</a>
+  <div class="nav-dot" aria-hidden="true"></div>
+  <a href="mailto:hello@yourname.com">Contact</a>
+</nav>
+
+<div class="scroll-hint" id="scrollHint" aria-hidden="true">
+  <span class="scroll-hint-label">Scroll</span>
+  <div class="scroll-hint-line"></div>
+</div>
+
+<section id="hero" aria-label="Hero">
+  <div id="hero-img" role="img" aria-label="Milky Way arch over Mackenzie Basin"></div>
+  <div id="hero-content">
+    <h1 class="hero-name">Your<br><em>Name</em></h1>
+    <p class="hero-sub">Astro + Landscape photographer<br>based in New Zealand</p>
+  </div>
+</section>
+
+<section id="gallery" aria-label="Photo gallery">
+  <p class="section-label">Selected Work</p>
+  <div class="genre-tabs" role="tablist" aria-label="Photo genre filter">
+    <button class="genre-btn active" data-genre="astro" role="tab" aria-selected="true">Astrophotography</button>
+    <button class="genre-btn" data-genre="landscape" role="tab" aria-selected="false">Landscape</button>
+    <button class="genre-btn" data-genre="aurora" role="tab" aria-selected="false">Aurora</button>
+    <button class="genre-btn" data-genre="longexp" role="tab" aria-selected="false">Long Exposure</button>
+  </div>
+  <div class="carousel-rows">
+    <div class="carousel-outer" id="outerA">
+      <button class="carousel-arrow arrow-prev" data-row="A" aria-label="Previous">&#8592;</button>
+      <button class="carousel-arrow arrow-next" data-row="A" aria-label="Next">&#8594;</button>
+      <div class="carousel-track" id="trackA"></div>
+    </div>
+    <div class="carousel-outer" id="outerB">
+      <button class="carousel-arrow arrow-prev" data-row="B" aria-label="Previous">&#8592;</button>
+      <button class="carousel-arrow arrow-next" data-row="B" aria-label="Next">&#8594;</button>
+      <div class="carousel-track" id="trackB"></div>
+    </div>
+  </div>
+</section>
+
+<section id="about" aria-label="About">
+  <div class="about-glass">
+    <a href="about.html" class="about-btn">Chasing dark skies</a>
+    <p>From the Mackenzie Basin to Fiordland, I spend my nights beneath New Zealand&#39;s unpolluted heavens &#8212; waiting for the light that only patience earns. Whether it&#39;s the arch of the Milky Way over a still lake or first light painting a ridge gold, every frame is a quiet conversation with the landscape.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-main">
+    <div class="footer-left">
+      <p class="footer-location">Based in New Zealand &mdash; Available Worldwide</p>
+      <a href="mailto:hello@yourname.com" class="footer-email">hello@yourname.com</a>
+    </div>
+    <div class="footer-center">
+      <p class="footer-center-label">Site Index</p>
+      <ul class="footer-index">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="prints.html">Prints</a></li>
+        <li><a href="mailto:hello@yourname.com">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-right">
+      <span class="footer-social-label">Follow</span>
+      <div class="social-btns">
+        <a href="https://instagram.com/yourhandle" class="social-btn" aria-label="Instagram" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://youtube.com/@yourhandle" class="social-btn" aria-label="YouTube" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+        </a>
+        <a href="https://facebook.com/yourpage" class="social-btn" aria-label="Facebook" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-divider"></div>
+  <p class="footer-copy">&copy; 2025 Your Name &nbsp;&middot;&nbsp; All rights reserved &nbsp;&middot;&nbsp; <a href="privacy.html">Privacy</a></p>
+</footer>
+
+<script>
+// ── HERO ──────────────────────────────────────────────────
+document.getElementById('hero-img').style.backgroundImage = "url('images/hero.jpg')";
+
+// ── GENRE DATA ────────────────────────────────────────────
+// ratio: '3/2' = landscape, '2/3' = portrait, '1/1' = square, '4/5' = tall portrait, '16/9' = wide landscape
+// file:  maps to images/gallery/<file>.jpg  — swap placeholder cls for real filename when you have photos
+// pos:   background-position for fine-tuning crop (only matters for real images)
+
+const genres = {
+  astro: {
+    row1: [
+      { file:'astro-1', ratio:'4/5',  caption:'Nightfall by the Stream',        meta:'Southern Alps',    ph:'ph-astro-p' },
+      { file:'astro-2', ratio:'1.47/1', caption:'Emergence',          meta:'Mackenzie Basin',        ph:'ph-astro-l' },
+      { file:'astro-3', ratio:'1/1',  caption:'Galactic Reflections',         meta:'Heaven',         ph:'ph-astro-s' },
+      { file:'astro-4', ratio:'4/5',  caption:'Between Worlds',             meta:'Mackenzie Basin',    ph:'ph-astro-p' },
+      { file:'astro-5', ratio:'4/5',  caption:'Galaxia',      meta:'Milky Way Galaxy',          ph:'ph-astro-l' },
+      { file:'astro-6', ratio:'5/4',  caption:'Lenticular Clouds',             meta:'Aoraki/Mt Cook',           ph:'ph-astro-p' },
+      { file:'astro-7', ratio:'4/5', caption:'Optical Craftsmen Telescope',  meta:'Mount John Observatory',      ph:'ph-astro-l' },
+    ],
+    row2: [
+      { file:'astro-8',  ratio:'3/2',  caption:'Zodiacal Light',        meta:'Central Otago',      ph:'ph-astro-l' },
+      { file:'astro-9',  ratio:'2/3',  caption:'Star Trails',           meta:'Canterbury Plains',  ph:'ph-astro-p' },
+      { file:'astro-10', ratio:'1/1',  caption:'Magellanic Cloud',      meta:'Mackenzie Basin',    ph:'ph-astro-s' },
+      { file:'astro-11', ratio:'16/9', caption:'Gegenschein',           meta:'Southland',          ph:'ph-astro-l' },
+      { file:'astro-12', ratio:'4/5',  caption:'Night Sky',             meta:'Wānaka',             ph:'ph-astro-p' },
+      { file:'astro-13', ratio:'2/3',  caption:'Perseids',              meta:'Lake Pukaki',        ph:'ph-astro-p' },
+      { file:'astro-14', ratio:'3/2',  caption:'Comet Panorama',        meta:'Mackenzie Basin',    ph:'ph-astro-l' },
+    ],
+  },
+  landscape: {
+    row1: [
+      { file:'land-1', ratio:'16/9', caption:'Sunrise',                 meta:'Aoraki / Mt Cook',   ph:'ph-land-l' },
+      { file:'land-2', ratio:'2/3',  caption:'Fog Layer',               meta:'Wānaka',             ph:'ph-land-p' },
+      { file:'land-3', ratio:'3/2',  caption:'Golden Hour',             meta:'Marlborough Sounds', ph:'ph-land-l' },
+      { file:'land-4', ratio:'1/1',  caption:'Storm Light',             meta:'West Coast',         ph:'ph-land-s' },
+      { file:'land-5', ratio:'4/5',  caption:'Autumn Reflections',      meta:'Central Otago',      ph:'ph-land-p' },
+      { file:'land-6', ratio:'16/9', caption:'Lake Matheson',           meta:'Fox Glacier',        ph:'ph-land-l' },
+      { file:'land-7', ratio:'2/3',  caption:'Tussock Plains',          meta:'Mackenzie Basin',    ph:'ph-land-p' },
+    ],
+    row2: [
+      { file:'land-8',  ratio:'3/2',  caption:'Coastal Dusk',          meta:'Kaikōura',           ph:'ph-land-l' },
+      { file:'land-9',  ratio:'2/3',  caption:'Alpine Meadow',         meta:"Arthur's Pass",      ph:'ph-land-p' },
+      { file:'land-10', ratio:'16/9', caption:'Punakaiki Pancakes',    meta:'West Coast',         ph:'ph-land-l' },
+      { file:'land-11', ratio:'1/1',  caption:'Ridge Light',           meta:'The Remarkables',    ph:'ph-land-s' },
+      { file:'land-12', ratio:'4/5',  caption:'Estuary at Dusk',       meta:'Canterbury',         ph:'ph-land-p' },
+      { file:'land-13', ratio:'3/2',  caption:'Mirror Lake',           meta:'Fiordland',          ph:'ph-land-l' },
+      { file:'land-14', ratio:'2/3',  caption:'Beech Forest',          meta:'Nelson Lakes',       ph:'ph-land-p' },
+    ],
+  },
+  aurora: {
+    row1: [
+      { file:'aurora-1', ratio:'3/2',  caption:'Aurora Australis',     meta:'Lake Tekapo',        ph:'ph-aurora-l' },
+      { file:'aurora-2', ratio:'2/3',  caption:'Southern Lights',      meta:'Fiordland',          ph:'ph-aurora-p' },
+      { file:'aurora-3', ratio:'16/9', caption:'Green Curtain',        meta:'Southland',          ph:'ph-aurora-l' },
+      { file:'aurora-4', ratio:'4/5',  caption:'Aurora Arch',          meta:'Wānaka',             ph:'ph-aurora-p' },
+      { file:'aurora-5', ratio:'1/1',  caption:'Purple Aurora',        meta:'Otago',              ph:'ph-aurora-s' },
+      { file:'aurora-6', ratio:'2/3',  caption:'Storm Aurora',         meta:'Canterbury',         ph:'ph-aurora-p' },
+      { file:'aurora-7', ratio:'3/2',  caption:'Aurora & Milky Way',   meta:'Lake Tekapo',        ph:'ph-aurora-l' },
+    ],
+    row2: [
+      { file:'aurora-8',  ratio:'16/9', caption:'Red Corona',          meta:'Mackenzie Basin',    ph:'ph-aurora-l' },
+      { file:'aurora-9',  ratio:'2/3',  caption:'Aurora Bay',          meta:'The Catlins',        ph:'ph-aurora-p' },
+      { file:'aurora-10', ratio:'3/2',  caption:'Pillars',             meta:'Stewart Island',     ph:'ph-aurora-l' },
+      { file:'aurora-11', ratio:'1/1',  caption:'Ribbons',             meta:'Southland',          ph:'ph-aurora-s' },
+      { file:'aurora-12', ratio:'4/5',  caption:'Aurora Rising',       meta:'Otago Peninsula',    ph:'ph-aurora-p' },
+      { file:'aurora-13', ratio:'2/3',  caption:'Pink Aurora',         meta:'Canterbury',         ph:'ph-aurora-p' },
+      { file:'aurora-14', ratio:'16/9', caption:'Horizon Glow',        meta:'Southland',          ph:'ph-aurora-l' },
+    ],
+  },
+  longexp: {
+    row1: [
+      { file:'longexp-1', ratio:'2/3',  caption:'Sea Silk',            meta:'Kaikōura',           ph:'ph-longexp-p' },
+      { file:'longexp-2', ratio:'16/9', caption:'Star Trails',         meta:'Aoraki Dark Sky',    ph:'ph-longexp-l' },
+      { file:'longexp-3', ratio:'3/2',  caption:'Light Painting',      meta:'Lake Tekapo',        ph:'ph-longexp-l' },
+      { file:'longexp-4', ratio:'4/5',  caption:'Waterfall Mist',      meta:'Fiordland',          ph:'ph-longexp-p' },
+      { file:'longexp-5', ratio:'1/1',  caption:'City Trails',         meta:'Christchurch',       ph:'ph-longexp-s' },
+      { file:'longexp-6', ratio:'2/3',  caption:'Coastal Blur',        meta:'West Coast',         ph:'ph-longexp-p' },
+      { file:'longexp-7', ratio:'3/2',  caption:'Meteor Trail',        meta:'Mackenzie Basin',    ph:'ph-longexp-l' },
+    ],
+    row2: [
+      { file:'longexp-8',  ratio:'16/9', caption:'River Silk',         meta:'Otago',              ph:'ph-longexp-l' },
+      { file:'longexp-9',  ratio:'2/3',  caption:'Lightning',          meta:'Canterbury',         ph:'ph-longexp-p' },
+      { file:'longexp-10', ratio:'3/2',  caption:'Headlight Trails',   meta:'Crown Range',        ph:'ph-longexp-l' },
+      { file:'longexp-11', ratio:'4/5',  caption:'Star Circles',       meta:'Aoraki',             ph:'ph-longexp-p' },
+      { file:'longexp-12', ratio:'1/1',  caption:'Kinetic Water',      meta:'Abel Tasman',        ph:'ph-longexp-s' },
+      { file:'longexp-13', ratio:'2/3',  caption:'Night Rain',         meta:'Wellington',         ph:'ph-longexp-p' },
+      { file:'longexp-14', ratio:'16/9', caption:'Sparkler Arch',      meta:'Central Otago',      ph:'ph-longexp-l' },
+    ],
+  },
+};
+
+// ── ORIENTATION LABEL ─────────────────────────────────────
+function orientationLabel(ratio) {
+  const [w, h] = ratio.split('/').map(Number);
+  if (w > h) return 'Landscape';
+  if (w < h) return 'Portrait';
+  return 'Square';
+}
+
+// ── BUILD SLIDES ──────────────────────────────────────────
+function buildSlides(data) {
+  // Triple for seamless loop
+  return [...data, ...data, ...data].map(item => {
+    const { file, ratio, caption, meta, ph, pos = 'center center' } = item;
+    const [rw, rh] = ratio.split('/').map(Number);
+    const width = Math.round(340 * rw / rh); // compute pixel width from ratio at fixed height 340px
+
+    const slide = document.createElement('div');
+    slide.className = 'slide';
+    slide.style.width = width + 'px';
+    slide.dataset.step = width + 16; // width + gap, for arrow stepping
+
+    // Try real image first; fall back to placeholder gradient
+    const imgSrc = `images/gallery/${file}.jpg`;
+
+    slide.innerHTML = `
+      <div class="slide-img ${ph}" style="background-image:url('${imgSrc}');background-size:cover;background-position:${pos};position:relative;">
+      </div>
+      <div class="slide-overlay">
+        <span class="slide-caption">${caption}</span>
+        <span class="slide-meta">${meta}</span>
+      </div>
+      <span class="slide-badge">${orientationLabel(ratio)}</span>
+    `;
+    return slide;
+  });
+}
+
+// ── CAROUSEL CLASS ────────────────────────────────────────
+class Carousel {
+  constructor(trackEl, outerEl, dir = 1) {
+    this.track = trackEl;
+    this.outer = outerEl;
+    this.dir = dir;
+    this.speed = 0.5;
+    this.offset = 0;
+    this.origCount = 0;
+    this.totalWidth = 0;
+    this.isHovered = false;
+    this.rafId = null;
+    this.isAnimating = false;
+
+    outerEl.addEventListener('mouseenter', () => { this.isHovered = true; });
+    outerEl.addEventListener('mouseleave', () => { this.isHovered = false; });
+
+    let tx = 0;
+    outerEl.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+    outerEl.addEventListener('touchend', e => {
+      const dx = tx - e.changedTouches[0].clientX;
+      if (Math.abs(dx) > 40) this.step(dx > 0 ? 1 : -1);
+    });
+  }
+
+  load(slideEls, origCount) {
+    this.track.innerHTML = '';
+    slideEls.forEach(s => this.track.appendChild(s));
+    this.origCount = origCount;
+
+    // Measure total width of one set after render
+    requestAnimationFrame(() => {
+      // sum widths of first origCount slides + gaps
+      const slides = this.track.children;
+      let w = 0;
+      for (let i = 0; i < origCount; i++) {
+        w += slides[i].offsetWidth + 16; // 16px gap
+      }
+      this.totalWidth = w;
+      this.offset = this.totalWidth; // start in middle clone set
+      this._apply(false);
+    });
+
+    if (!this.rafId) this._tick();
+  }
+
+  _apply(animated = false) {
+    this.track.style.transition = animated
+      ? 'transform .55s cubic-bezier(.25,.46,.45,.94)'
+      : 'none';
+    this.track.style.transform = `translateX(-${this.offset}px)`;
+  }
+
+  _clamp() {
+    if (!this.totalWidth) return;
+    if (this.offset >= this.totalWidth * 2) this.offset -= this.totalWidth;
+    if (this.offset < this.totalWidth) this.offset += this.totalWidth;
+    this._apply(false);
+  }
+
+  _tick() {
+    if (!this.isHovered && this.totalWidth) {
+      this.offset += this.speed * this.dir;
+      this._clamp();
+      this.track.style.transform = `translateX(-${this.offset}px)`;
+    }
+    this.rafId = requestAnimationFrame(() => this._tick());
+  }
+
+  step(direction) {
+    if (this.isAnimating || !this.totalWidth) return;
+    this.isAnimating = true;
+    // Step by average slide width (approx 250px)
+    const stepPx = 260;
+    this.offset += direction * stepPx;
+    this._clamp();
+    this._apply(true);
+    setTimeout(() => { this.isAnimating = false; this.track.style.transition = 'none'; }, 560);
+  }
+}
+
+const carouselA = new Carousel(document.getElementById('trackA'), document.getElementById('outerA'), 1);
+const carouselB = new Carousel(document.getElementById('trackB'), document.getElementById('outerB'), -1);
+
+function loadGenre(genre) {
+  const d = genres[genre];
+  carouselA.load(buildSlides(d.row1), d.row1.length);
+  carouselB.load(buildSlides(d.row2), d.row2.length);
+}
+
+document.querySelectorAll('.genre-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.genre-btn').forEach(b => {
+      b.classList.remove('active'); b.setAttribute('aria-selected', 'false');
+    });
+    btn.classList.add('active'); btn.setAttribute('aria-selected', 'true');
+    loadGenre(btn.dataset.genre);
+  });
+});
+
+document.querySelectorAll('.carousel-arrow').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const isNext = btn.classList.contains('arrow-next');
+    const row = btn.dataset.row;
+    (row === 'A' ? carouselA : carouselB).step(isNext ? 1 : -1);
+  });
+});
+
+loadGenre('astro');
+
+// ── SCROLL PARALLAX ───────────────────────────────────────
+const heroImg = document.getElementById('hero-img');
+const heroContent = document.getElementById('hero-content');
+const heroSection = document.getElementById('hero');
+const scrollHint = document.getElementById('scrollHint');
+
+function onScroll() {
+  const y = window.scrollY, h = heroSection.offsetHeight;
+  const p = Math.min(y / h, 1);
+  heroImg.style.opacity = Math.max(1 - p * 1.25, 0);
+  heroImg.style.transform = `scale(${1 + p * 0.05})`;
+  heroContent.style.transform = `translateY(${y * 0.25}px) scale(${Math.max(1 - p * 0.18, 0.82)})`;
+  heroContent.style.opacity = Math.max(1 - p * 1.7, 0);
+  scrollHint.classList.toggle('hidden', y > 80);
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+</script>
+</body>
+</html>
