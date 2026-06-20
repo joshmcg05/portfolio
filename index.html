@@ -6,6 +6,12 @@
 <title>Portfolio — Astro & Landscape Photography</title>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Raleway:wght@300&display=swap" rel="stylesheet">
 <style>
+  .hero-name-first {
+  font-size: 1em;
+}
+.hero-name-last {
+  font-size: 0.6em;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --glass-blur:blur(28px) saturate(180%);
@@ -300,7 +306,10 @@ filter:drop-shadow(0 -1px 0 rgba(255,255,255,0.4)) drop-shadow(0 1px 0 rgba(255,
 <section id="hero" aria-label="Hero">
   <div id="hero-img" role="img" aria-label="Milky Way arch over Mackenzie Basin"></div>
   <div id="hero-content">
-    <h1 class="hero-name">JOSH<br><em>MCGUIGAN</em></h1>
+   <h1 class="hero-name">
+  <span class="hero-name-first">Josh</span><br>
+  <span class="hero-name-last">Mcguigan</span>
+</h1>
     <p class="hero-sub">Astro + Landscape photographer<br>based in New Zealand</p>
   </div>
 </section>
