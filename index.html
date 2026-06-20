@@ -128,12 +128,12 @@ nav a:hover::after{transform:scaleX(1)}
   display:flex;flex-direction:column;align-items:center;gap:1.5rem;padding:2rem;
   will-change:transform,opacity;
 }
-.hero-name{
-  font-family: 'Archivo Black', sans-serif;
-  font-size: clamp(4.5rem,11.25vw,10rem);font-weight:900;letter-spacing:-0.03em;line-height:0.45;
-  background:linear-gradient(160deg,rgba(255,255,255,0.55) 0%,rgba(200,218,255,0.55) 40%,rgba(255,255,255,0.35) 70%,rgba(180,210,255,0.40) 100%);
--webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-filter:drop-shadow(0 -1px 0 rgba(255,255,255,0.4)) drop-shadow(0 1px 0 rgba(255,255,255,0.4)) drop-shadow(-1px 0 0 rgba(255,255,255,0.2)) drop-shadow(1px 0 0 rgba(255,255,255,0.2)) drop-shadow(0 4px 24px rgba(80,120,255,0.35));padding:0.15em 0.05em;
+.hero-name-svg{
+  width:min(820px, 90vw);
+  height:auto;
+  display:block;
+  filter:none;
+}
 }
 .hero-name em{font-style:normal;font-weight:800}
 .hero-sub{font-family:'Raleway',sans-serif;font-size:clamp(0.72rem,1.4vw,0.88rem);font-weight:300;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.62);line-height:1.6}
@@ -369,10 +369,55 @@ filter:drop-shadow(0 -1px 0 rgba(255,255,255,0.4)) drop-shadow(0 1px 0 rgba(255,
 <section id="hero" aria-label="Hero">
   <div id="hero-img" role="img" aria-label="Milky Way arch over Mackenzie Basin"></div>
   <div id="hero-content">
-   <h1 class="hero-name">
-  <span class="hero-name-first">JOSH</span><br>
-  <span class="hero-name-last">MCGUIGAN</span>
-</h1>
+   <svg class="hero-name-svg" viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg" aria-label="Josh Mcguigan">
+  <defs>
+    <filter id="glass" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" result="displaced"/>
+      <feOffset in="displaced" dy="-1.5" result="top"/>
+      <feComposite in="top" in2="SourceGraphic" operator="in" result="topEdge"/>
+      <feFlood flood-color="rgba(255,255,255,0.9)" result="white"/>
+      <feComposite in="white" in2="topEdge" operator="in" result="topLight"/>
+      <feOffset in="displaced" dy="1.5" result="bot"/>
+      <feComposite in="bot" in2="SourceGraphic" operator="in" result="botEdge"/>
+      <feFlood flood-color="rgba(255,255,255,0.4)" result="white2"/>
+      <feComposite in="white2" in2="botEdge" operator="in" result="botLight"/>
+      <feMerge>
+        <feMergeNode in="displaced"/>
+        <feMergeNode in="topLight"/>
+        <feMergeNode in="botLight"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="rgba(255,255,255,0.62)"/>
+      <stop offset="40%"  stop-color="rgba(200,218,255,0.45)"/>
+      <stop offset="70%"  stop-color="rgba(255,255,255,0.38)"/>
+      <stop offset="100%" stop-color="rgba(180,210,255,0.50)"/>
+    </linearGradient>
+  </defs>
+  <text
+    x="50%" y="48%"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="'Archivo Black', sans-serif"
+    font-size="148"
+    font-weight="900"
+    fill="url(#glassGrad)"
+    filter="url(#glass)"
+    letter-spacing="6"
+  >JOSH</text>
+  <text
+    x="50%" y="86%"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="'Archivo Black', sans-serif"
+    font-size="88"
+    font-weight="900"
+    fill="url(#glassGrad)"
+    filter="url(#glass)"
+    letter-spacing="6"
+  >MCGUIGAN</text>
+</svg>
     <p class="hero-sub">Astro + Landscape photographer<br>based in New Zealand</p>
   </div>
 </section>
