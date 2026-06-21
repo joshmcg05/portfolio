@@ -6,12 +6,18 @@
 <title>Portfolio — Astro & Landscape Photography</title>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Raleway:wght@300&display=swap" rel="stylesheet">
 <style>
-  .lightbox{
+ .lightbox{
   position:fixed;inset:0;z-index:999;
   display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;
   transition:opacity 0.35s ease;
+  isolation:isolate;
 }
+.lightbox.active{opacity:1;pointer-events:none}
+.lightbox-backdrop{pointer-events:all;cursor:pointer}
+.lightbox-img{pointer-events:none}
+.lightbox-close{pointer-events:all}
+.lightbox-arrow{pointer-events:all}
 .lightbox.active{opacity:1;pointer-events:all}
 .lightbox-backdrop{
   position:absolute;inset:0;
@@ -57,17 +63,7 @@
 .lightbox-arrow:hover{background:rgba(255,255,255,0.16);color:#fff;border-color:rgba(255,255,255,0.42)}
 .lightbox-prev{left:1.5rem}
 .lightbox-next{right:1.5rem}
-.lightbox-caption{
-  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
-  z-index:3;text-align:center;
-}
-.lightbox-caption-title{
-  font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;
-  color:rgba(255,255,255,0.85);font-weight:400;display:block;
-}
-.lightbox-caption-meta{
-  font-size:0.72rem;letter-spacing:0.1em;
-  color:rgba(255,255,255,0.45);font-weight:300;display:block;margin-top:0.3rem;
+.lightbox-caption{display:none}
 }
   .hero-name-first {
   font-size: 1em;
@@ -762,8 +758,6 @@ window.addEventListener('scroll', onScroll, { passive: true });
 // ── LIGHTBOX ─────────────────────────────────────────
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightboxImg');
-const lightboxTitle = document.getElementById('lightboxTitle');
-const lightboxMeta = document.getElementById('lightboxMeta');
 
 window._lightboxItems = [];
 window._lightboxIndex = 0;
@@ -782,16 +776,26 @@ function showSlide(index) {
   lightboxImg.style.opacity = '0';
   setTimeout(() => {
     lightboxImg.src = `images/gallery/${item.file}.jpg`;
-    lightboxTitle.textContent = item.caption;
-    lightboxMeta.textContent = item.meta || '';
     lightboxImg.style.opacity = '1';
   }, 150);
 }
 
-document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
-document.getElementById('lightboxBackdrop').addEventListener('click', closeLightbox);
-document.getElementById('lightboxPrev').addEventListener('click', () => showSlide(window._lightboxIndex - 1));
-document.getElementById('lightboxNext').addEventListener('click', () => showSlide(window._lightboxIndex + 1));
+document.getElementById('lightboxClose').addEventListener('click', (e) => {
+  e.stopPropagation();
+  closeLightbox();
+});
+document.getElementById('lightboxBackdrop').addEventListener('click', (e) => {
+  e.stopPropagation();
+  closeLightbox();
+});
+document.getElementById('lightboxPrev').addEventListener('click', (e) => {
+  e.stopPropagation();
+  showSlide(window._lightboxIndex - 1);
+});
+document.getElementById('lightboxNext').addEventListener('click', (e) => {
+  e.stopPropagation();
+  showSlide(window._lightboxIndex + 1);
+});
 
 document.addEventListener('keydown', e => {
   if (!lightbox.classList.contains('active')) return;
@@ -800,15 +804,12 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') showSlide(window._lightboxIndex + 1);
 });
 </script>
-<div class="lightbox" id="lightbox">
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
   <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
   <img class="lightbox-img" id="lightboxImg" src="" alt="">
   <button class="lightbox-close" id="lightboxClose" aria-label="Close">&#10005;</button>
   <button class="lightbox-arrow lightbox-prev" id="lightboxPrev" aria-label="Previous">&#8592;</button>
   <button class="lightbox-arrow lightbox-next" id="lightboxNext" aria-label="Next">&#8594;</button>
-  <div class="lightbox-caption">
-    <span class="lightbox-caption-title" id="lightboxTitle"></span>
-    <span class="lightbox-caption-meta" id="lightboxMeta"></span>
   </div>
 </div>
 </body>
