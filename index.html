@@ -603,7 +603,18 @@ slide.addEventListener('click', () => {
   const genre = document.querySelector('.genre-btn.active').dataset.genre;
   const allItems = [...genres[genre].row1, ...genres[genre].row2];
   const index = allItems.findIndex(i => i.file === file);
-  openLightbox(`images/gallery/${file}.jpg`, caption, meta, index, genre);
+  const src = `images/gallery/${file}.jpg`;
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightboxImg');
+  const lbTitle = document.getElementById('lightboxTitle');
+  const lbMeta = document.getElementById('lightboxMeta');
+  window._lightboxItems = allItems;
+  window._lightboxIndex = index;
+  lbImg.src = src;
+  lbTitle.textContent = caption;
+  lbMeta.textContent = meta || '';
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
 });
     // Try real image first; fall back to placeholder gradient
     const imgSrc = `images/gallery/${file}.jpg`;
@@ -748,27 +759,14 @@ function onScroll() {
 }
 window.addEventListener('scroll', onScroll, { passive: true });
 // ── LIGHTBOX ─────────────────────────────────────────
+// ── LIGHTBOX ─────────────────────────────────────────
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightboxImg');
 const lightboxTitle = document.getElementById('lightboxTitle');
 const lightboxMeta = document.getElementById('lightboxMeta');
 
-let lightboxItems = [];
-let lightboxIndex = 0;
-
-function buildLightboxItems(genre) {
-  return [...genres[genre].row1, ...genres[genre].row2];
-}
-
-function openLightbox(src, caption, meta, index, genre) {
-  lightboxItems = buildLightboxItems(genre);
-  lightboxIndex = index;
-  lightboxImg.src = src;
-  lightboxTitle.textContent = caption;
-  lightboxMeta.textContent = meta || '';
-  lightbox.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
+window._lightboxItems = [];
+window._lightboxIndex = 0;
 
 function closeLightbox() {
   lightbox.classList.remove('active');
@@ -777,9 +775,10 @@ function closeLightbox() {
 }
 
 function showSlide(index) {
-  const total = lightboxItems.length;
-  lightboxIndex = (index + total) % total;
-  const item = lightboxItems[lightboxIndex];
+  const items = window._lightboxItems;
+  const total = items.length;
+  window._lightboxIndex = (index + total) % total;
+  const item = items[window._lightboxIndex];
   lightboxImg.style.opacity = '0';
   setTimeout(() => {
     lightboxImg.src = `images/gallery/${item.file}.jpg`;
@@ -791,13 +790,14 @@ function showSlide(index) {
 
 document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
 document.getElementById('lightboxBackdrop').addEventListener('click', closeLightbox);
-document.getElementById('lightboxPrev').addEventListener('click', () => showSlide(lightboxIndex - 1));
-document.getElementById('lightboxNext').addEventListener('click', () => showSlide(lightboxIndex + 1));
+document.getElementById('lightboxPrev').addEventListener('click', () => showSlide(window._lightboxIndex - 1));
+document.getElementById('lightboxNext').addEventListener('click', () => showSlide(window._lightboxIndex + 1));
+
 document.addEventListener('keydown', e => {
   if (!lightbox.classList.contains('active')) return;
   if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') showSlide(lightboxIndex - 1);
-  if (e.key === 'ArrowRight') showSlide(lightboxIndex + 1);
+  if (e.key === 'ArrowLeft') showSlide(window._lightboxIndex - 1);
+  if (e.key === 'ArrowRight') showSlide(window._lightboxIndex + 1);
 });
 </script>
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
