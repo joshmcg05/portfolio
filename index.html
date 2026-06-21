@@ -11,13 +11,7 @@
   display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;
   transition:opacity 0.35s ease;
-  isolation:isolate;
 }
-.lightbox.active{opacity:1;pointer-events:none}
-.lightbox-backdrop{pointer-events:all;cursor:pointer}
-.lightbox-img{pointer-events:none}
-.lightbox-close{pointer-events:all}
-.lightbox-arrow{pointer-events:all}
 .lightbox.active{opacity:1;pointer-events:all}
 .lightbox-backdrop{
   position:absolute;inset:0;
@@ -754,7 +748,6 @@ function onScroll() {
   scrollHint.classList.toggle('hidden', y > 80);
 }
 window.addEventListener('scroll', onScroll, { passive: true });
-// ── LIGHTBOX ─────────────────────────────────────────
 // ── LIGHTBOX ─────────────────────────────────────────
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightboxImg');
