@@ -326,8 +326,8 @@ nav a:hover::after{transform:scaleX(1)}
 </head>
 <body>
 
-<div id="scroll-blur" style="position:fixed;top:0;left:0;right:0;height:120px;background:linear-gradient(to bottom,rgba(3,8,15,0.95) 0%,rgba(3,8,15,0.6) 60%,transparent 100%);z-index:90;pointer-events:none;"></div>
-
+<div id="scroll-blur" style="position:fixed;top:0;left:0;right:0;height:120px;background:linear-gradient(to bottom,rgba(3,8,15,0.2) 0%,rgba(3,8,15,0.05) 60%,transparent 100%);z-index:90;pointer-events:none;"></div>
+ 
 <nav aria-label="Site navigation">
   <a href="#hero">Home</a>
   <div class="nav-dot" aria-hidden="true"></div>
@@ -787,7 +787,7 @@ document.addEventListener('keydown', e => {
 const scrollBlurEl = document.getElementById('scroll-blur');
 function updateScrollBlur() {
   const y = window.scrollY;
-  const blurAmount = Math.min(y / 80, 1) * 12;
+  const blurAmount = Math.min(y / 80, 1) * 24;
   scrollBlurEl.style.backdropFilter = `blur(${blurAmount}px)`;
   scrollBlurEl.style.webkitBackdropFilter = `blur(${blurAmount}px)`;
 }
