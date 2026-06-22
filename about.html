@@ -71,7 +71,7 @@ nav a:hover::after{transform:scaleX(1)}
 }
 .page-bg-overlay{
   position:absolute;inset:0;
-  background:linear-gradient(to bottom,rgba(3,8,15,0.35) 0%,rgba(3,8,15,0.5) 100%);
+  background:linear-gradient(to bottom,rgba(3,8,15,0.15) 0%,rgba(3,8,15,0.3) 100%);
 }
 
 /* ── HERO STRIP ── */
@@ -309,14 +309,15 @@ footer{
 
 <main class="about-layout">
 
-  <!-- LEFT — PHOTO -->
+<!-- LEFT — PHOTO -->
   <div class="about-image-wrap">
     <div class="about-image-frame">
-      <!-- Replace src with your actual photo, e.g. images/josh.jpg -->
       <img src="images/about.jpg" alt="Josh McGuigan" onerror="this.style.opacity='0'">
     </div>
   </div>
 
+  <!-- RIGHT — TEXT -->
+  <div class="about-text-wrap">
     <div class="about-body">
       <p>I was born in Nelson, at the top of New Zealand's South Island, and raised in NZ's largest city of Auckland. Throughout my life I've had the pleasure of travelling all over this beautiful country, and the planet — that travel has helped shape who I am today and the immense appreciation I have for our natural world. I'm now based in Lake Tekapo, a world premiere destination for those chasing connection to the cosmos.</p>
       <div class="about-divider" aria-hidden="true"></div>
@@ -324,12 +325,10 @@ footer{
       <div class="about-divider" aria-hidden="true"></div>
       <p>I've also spent the last two years working as a tour guide, in both NZ and Canada. That experience has helped me refine the skills that let me share the wonder of the night with people. I'm now available for all sorts of work, in New Zealand and worldwide. Get in touch, and let's make magic happen!</p>
     </div>
-
     <a href="contact.html" class="work-btn">
       Work with me
       <span class="work-btn-arrow" aria-hidden="true">&#8594;</span>
     </a>
-
   </div>
 </main>
 
