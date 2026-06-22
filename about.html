@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Josh — Astro & Landscape Photography</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Raleway:wght@300;400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --glass-blur:blur(28px) saturate(180%);
+  --deep:#03080f;
+  --navy:#050c1a;
+  --star-white:rgba(255,255,255,0.94);
+  --muted:rgba(255,255,255,0.52);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--deep);
+  color:var(--star-white);
+  font-family:'Raleway',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* ── SCROLL BLUR OVERLAY ── */
+#scroll-blur{
+  position:fixed;top:0;left:0;right:0;
+  height:120px;
+  background:linear-gradient(to bottom,rgba(3,8,15,0.95) 0%,rgba(3,8,15,0.6) 60%,transparent 100%);
+  backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);
+  z-index:90;pointer-events:none;
+  transition:backdrop-filter 0.3s ease,-webkit-backdrop-filter 0.3s ease;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:1.5rem;left:50%;transform:translateX(-50%);
+  z-index:100;display:flex;align-items:center;
+  background:rgba(255,255,255,0.10);border:none;
+  backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  border-radius:100px;padding:0.4rem 0.6rem;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1.5px 0 rgba(255,255,255,0.22),inset 0 -1px 0 rgba(0,0,0,0.18);
+  white-space:nowrap;
+}
+nav a{
+  font-size:0.72rem;font-weight:400;letter-spacing:0.13em;text-transform:uppercase;
+  color:rgba(255,255,255,0.72);text-decoration:none;padding:0.4rem 1rem;
+  position:relative;transition:color .25s ease;font-family:'Inter',sans-serif;
+}
+nav a::after{
+  content:'';position:absolute;bottom:2px;left:1rem;right:1rem;
+  height:1px;background:rgba(255,255,255,0.85);
+  transform:scaleX(0);transform-origin:center;
+  transition:transform .3s cubic-bezier(.25,.46,.45,.94);
+}
+nav a:hover{color:#fff}
+nav a:hover::after{transform:scaleX(1)}
+.nav-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,0.22);margin:0 .15rem;flex-shrink:0}
+
+/* ── PAGE BACKGROUND ── */
+.page-bg{
+  position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 40%,rgba(20,40,100,0.25) 0%,transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 70%,rgba(10,25,70,0.2) 0%,transparent 60%),
+    var(--deep);
+}
+
+/* ── HERO STRIP ── */
+.about-hero{
+  position:relative;z-index:1;
+  padding:10rem 4rem 5rem;
+  max-width:1200px;margin:0 auto;
+}
+.about-eyebrow{
+  font-family:'Inter',sans-serif;
+  font-size:0.68rem;letter-spacing:0.42em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);margin-bottom:1.5rem;
+}
+
+/* ── MAIN LAYOUT ── */
+.about-layout{
+  position:relative;z-index:1;
+  max-width:1200px;margin:0 auto;
+  padding:0 4rem 8rem;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5rem;
+  align-items:start;
+}
+
+/* ── LEFT — IMAGE ── */
+.about-image-wrap{
+  position:sticky;top:7rem;
+}
+.about-image-frame{
+  position:relative;
+  border-radius:20px;
+  overflow:hidden;
+  aspect-ratio:3/4;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 32px 80px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.about-image-frame img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  display:block;
+  transition:transform 0.6s ease;
+}
+.about-image-frame:hover img{transform:scale(1.03)}
+
+/* Glass shimmer over image */
+.about-image-frame::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(
+    135deg,
+    rgba(255,255,255,0.06) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(255,255,255,0.03) 100%
+  );
+  pointer-events:none;
+}
+
+/* Location tag */
+.about-location-tag{
+  position:absolute;bottom:1.25rem;left:1.25rem;right:1.25rem;
+  background:rgba(3,8,15,0.65);
+  border:1px solid rgba(255,255,255,0.14);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-radius:12px;padding:0.75rem 1rem;
+  display:flex;align-items:center;gap:0.6rem;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.about-location-dot{
+  width:6px;height:6px;border-radius:50%;flex-shrink:0;
+  background:rgba(120,180,255,0.9);
+  box-shadow:0 0 8px rgba(100,160,255,0.6);
+}
+.about-location-text{
+  font-family:'Inter',sans-serif;
+  font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(255,255,255,0.65);
+}
+
+/* ── RIGHT — TEXT ── */
+.about-text-wrap{
+  padding-top:0.5rem;
+}
+.about-title{
+  font-family:'Archivo Black',sans-serif;
+  font-size:clamp(2.8rem,5vw,4.5rem);
+  font-weight:900;
+  letter-spacing:-0.01em;
+  line-height:1.05;
+  margin-bottom:2.5rem;
+  background:linear-gradient(160deg,rgba(255,255,255,0.92) 0%,rgba(200,218,255,0.75) 50%,rgba(255,255,255,0.80) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 -1px 0 rgba(255,255,255,0.3)) drop-shadow(0 1px 0 rgba(255,255,255,0.3)) drop-shadow(0 4px 20px rgba(80,120,255,0.2));
+}
+.about-body{
+  display:flex;flex-direction:column;gap:1.6rem;
+  margin-bottom:3rem;
+}
+.about-body p{
+  font-family:'Raleway',sans-serif;
+  font-size:1rem;
+  font-weight:300;
+  line-height:1.9;
+  color:rgba(255,255,255,0.62);
+}
+.about-body p:first-child::first-letter{
+  font-family:'Archivo Black',sans-serif;
+  font-size:3.2rem;font-weight:900;
+  float:left;line-height:0.85;
+  margin-right:0.12em;margin-top:0.08em;
+  color:rgba(200,218,255,0.7);
+}
+
+/* Divider line between paragraphs */
+.about-divider{
+  width:40px;height:1px;
+  background:linear-gradient(90deg,rgba(140,175,255,0.4),transparent);
+  margin:0;
+}
+
+/* ── WORK WITH ME BUTTON ── */
+.work-btn{
+  display:inline-flex;align-items:center;gap:0.75rem;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.22);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-radius:100px;
+  padding:0.85rem 2rem;
+  font-family:'Inter',sans-serif;
+  font-size:0.75rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;
+  color:rgba(255,255,255,0.78);
+  text-decoration:none;
+  transition:all .3s ease;
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.18),0 8px 32px rgba(0,0,0,0.3);
+  position:relative;overflow:hidden;
+}
+.work-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.06) 0%,transparent 60%);
+  border-radius:100px;
+}
+.work-btn:hover{
+  background:rgba(255,255,255,0.14);
+  border-color:rgba(255,255,255,0.40);
+  color:#fff;
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.25),0 0 30px rgba(120,160,255,0.15),0 8px 32px rgba(0,0,0,0.4);
+  transform:translateY(-2px);
+}
+.work-btn-arrow{
+  font-size:1rem;
+  transition:transform .3s ease;
+}
+.work-btn:hover .work-btn-arrow{transform:translateX(4px)}
+
+/* ── STATS ROW ── */
+.about-stats{
+  display:flex;gap:2.5rem;
+  margin-bottom:3rem;
+  padding-bottom:2.5rem;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.stat{display:flex;flex-direction:column;gap:0.3rem}
+.stat-number{
+  font-family:'Archivo Black',sans-serif;
+  font-size:1.8rem;font-weight:900;
+  color:rgba(200,218,255,0.8);letter-spacing:-0.02em;
+}
+.stat-label{
+  font-family:'Inter',sans-serif;
+  font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:rgba(255,255,255,0.3);
+}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+}
+.footer-main{
+  padding:4rem 4rem 2.5rem;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:3rem;
+}
+.footer-left .footer-location{font-size:.65rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.7rem;font-family:'Inter',sans-serif}
+.footer-left .footer-email{font-family:'Archivo Black',sans-serif;font-size:1.4rem;font-weight:900;color:rgba(190,210,255,0.85);text-decoration:none;transition:color .22s;display:block;letter-spacing:-0.01em}
+.footer-left .footer-email:hover{color:#fff}
+.footer-center-label{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:1rem;text-align:center;font-family:'Inter',sans-serif}
+.footer-index{list-style:none;display:flex;flex-direction:column;gap:.5rem;align-items:center}
+.footer-index a{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,0.42);text-decoration:none;transition:color .2s;position:relative;font-family:'Inter',sans-serif}
+.footer-index a::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:rgba(255,255,255,0.5);transform:scaleX(0);transform-origin:center;transition:transform .28s ease}
+.footer-index a:hover{color:rgba(255,255,255,0.78)}
+.footer-index a:hover::after{transform:scaleX(1)}
+.footer-right{display:flex;flex-direction:column;align-items:flex-end;gap:1rem}
+.footer-social-label{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,0.25);font-family:'Inter',sans-serif}
+.social-btns{display:flex;gap:.65rem}
+.social-btn{
+  width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.20);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  color:rgba(255,255,255,0.65);text-decoration:none;
+  transition:all .25s ease;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.15),0 4px 16px rgba(0,0,0,0.3);
+}
+.social-btn:hover{background:rgba(255,255,255,0.16);border-color:rgba(255,255,255,0.42);color:#fff;transform:translateY(-2px)}
+.social-btn svg{width:18px;height:18px;fill:currentColor}
+.footer-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);margin:0 4rem}
+.footer-copy{padding:1.25rem 4rem 2rem;text-align:center;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,0.2);font-family:'Inter',sans-serif}
+.footer-copy a{color:rgba(140,175,255,.45);text-decoration:none;transition:color .2s}
+.footer-copy a:hover{color:rgba(170,200,255,.8)}
+
+@media(max-width:900px){
+  .about-layout{grid-template-columns:1fr;gap:3rem;padding:0 2rem 6rem}
+  .about-hero{padding:8rem 2rem 3rem}
+  .about-image-wrap{position:relative;top:0}
+  .about-image-frame{aspect-ratio:4/3}
+  .footer-main{grid-template-columns:1fr;padding:3rem 2rem 2rem;gap:2.5rem}
+  .footer-right{align-items:flex-start}
+  .footer-divider,.footer-copy{margin:0 2rem}
+  .about-stats{flex-wrap:wrap;gap:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<div class="page-bg" aria-hidden="true"></div>
+
+<nav aria-label="Site navigation">
+  <a href="index.html">Home</a>
+  <div class="nav-dot" aria-hidden="true"></div>
+  <a href="index.html#gallery">Gallery</a>
+  <div class="nav-dot" aria-hidden="true"></div>
+  <a href="about.html">About</a>
+  <div class="nav-dot" aria-hidden="true"></div>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<div class="about-hero">
+  <p class="about-eyebrow">The person behind the lens</p>
+</div>
+
+<main class="about-layout">
+
+  <!-- LEFT — PHOTO -->
+  <div class="about-image-wrap">
+    <div class="about-image-frame">
+      <!-- Replace src with your actual photo, e.g. images/josh.jpg -->
+      <img src="images/about.jpg" alt="Josh McGuigan" onerror="this.style.opacity='0'">
+      <div class="about-location-tag">
+        <span class="about-location-dot" aria-hidden="true"></span>
+        <span class="about-location-text">Lake Tekapo, New Zealand</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT — TEXT -->
+  <div class="about-text-wrap">
+
+    <h1 class="about-title">About<br>Josh</h1>
+
+    <div class="about-stats">
+      <div class="stat">
+        <span class="stat-number">2+</span>
+        <span class="stat-label">Years Guiding</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">NZ</span>
+        <span class="stat-label">& Canada</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">∞</span>
+        <span class="stat-label">Dark Skies</span>
+      </div>
+    </div>
+
+    <div class="about-body">
+      <p>I was born in Nelson, at the top of New Zealand's South Island, and raised in NZ's largest city of Auckland. Throughout my life I've had the pleasure of travelling all over this beautiful country, and the planet — that travel has helped shape who I am today and the immense appreciation I have for our natural world. I'm now based in Lake Tekapo, a world premiere destination for those chasing connection to the cosmos.</p>
+      <div class="about-divider" aria-hidden="true"></div>
+      <p>My work is primarily captured during the hours when most are asleep, amongst the most wild and rugged landscapes nature has to offer. It's about capturing that feeling of seeing the Milky Way with your own two eyes, and sharing it with the world. If I'm not out under the stars (or asleep), I'm busy exploring new photo locations, planning the next roadtrip, or on an editing marathon.</p>
+      <div class="about-divider" aria-hidden="true"></div>
+      <p>I've also spent the last two years working as a tour guide, in both NZ and Canada. That experience has helped me refine the skills that let me share the wonder of the night with people. I'm now available for all sorts of work, in New Zealand and worldwide. Get in touch, and let's make magic happen!</p>
+    </div>
+
+    <a href="contact.html" class="work-btn">
+      Work with me
+      <span class="work-btn-arrow" aria-hidden="true">&#8594;</span>
+    </a>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-main">
+    <div class="footer-left">
+      <p class="footer-location">Based in New Zealand &mdash; Available Worldwide</p>
+      <a href="mailto:hello@joshmcguigan.com" class="footer-email">hello@joshmcguigan.com</a>
+    </div>
+    <div class="footer-center">
+      <p class="footer-center-label">Site Index</p>
+      <ul class="footer-index">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#gallery">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="prints.html">Prints</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-right">
+      <span class="footer-social-label">Follow</span>
+      <div class="social-btns">
+        <a href="https://instagram.com/yourhandle" class="social-btn" aria-label="Instagram" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://youtube.com/@yourhandle" class="social-btn" aria-label="YouTube" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+        </a>
+        <a href="https://facebook.com/yourpage" class="social-btn" aria-label="Facebook" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-divider"></div>
+  <p class="footer-copy">&copy; 2025 Josh McGuigan &nbsp;&middot;&nbsp; All rights reserved &nbsp;&middot;&nbsp; <a href="privacy.html">Privacy</a></p>
+</footer>
+
+<script>
+// ── SCROLL BLUR ───────────────────────────────────────
+const scrollBlurEl = document.getElementById('scroll-blur');
+function onScroll() {
+  const y = window.scrollY;
+  const blurAmount = Math.min(y / 80, 1) * 12;
+  scrollBlurEl.style.backdropFilter = `blur(${blurAmount}px)`;
+  scrollBlurEl.style.webkitBackdropFilter = `blur(${blurAmount}px)`;
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+</script>
+
+</body>
+</html>
