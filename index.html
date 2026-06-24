@@ -6,6 +6,10 @@
 <title>Portfolio — Astro & Landscape Photography</title>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Raleway:wght@300&display=swap" rel="stylesheet">
 <style>
+ #page-wrap{
+  transition:filter 0.1s linear;
+  will-change:filter;
+}
  .lightbox{
   position:fixed;inset:0;z-index:999;
   display:flex;align-items:center;justify-content:center;
@@ -325,8 +329,7 @@ nav a:hover::after{transform:scaleX(1)}
 </style>
 </head>
 <body>
-
-<div id="scroll-blur" style="position:fixed;top:0;left:0;right:0;height:120px;background:linear-gradient(to bottom,rgba(3,8,15,0.2) 0%,rgba(3,8,15,0.05) 60%,transparent 100%);z-index:90;pointer-events:none;"></div>
+<div id="page-wrap">
  
 <nav aria-label="Site navigation">
   <a href="#hero">Home</a>
@@ -784,12 +787,10 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') showSlide(window._lightboxIndex + 1);
 });
 // ── SCROLL BLUR ───────────────────────────────────────
-const scrollBlurEl = document.getElementById('scroll-blur');
 function updateScrollBlur() {
   const y = window.scrollY;
-  const blurAmount = Math.min(y / 80, 1) * 24;
-  scrollBlurEl.style.backdropFilter = `blur(${blurAmount}px)`;
-  scrollBlurEl.style.webkitBackdropFilter = `blur(${blurAmount}px)`;
+  const blurAmount = Math.min(y / 100, 1) * 14;
+  document.getElementById('page-wrap').style.filter = `blur(${blurAmount}px)`;
 }
 window.addEventListener('scroll', updateScrollBlur, { passive: true });
 </script>
