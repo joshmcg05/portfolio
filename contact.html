@@ -366,7 +366,7 @@ footer{position:relative;z-index:1}
   <div class="footer-main">
     <div class="footer-left">
       <p class="footer-location">Based in New Zealand &mdash; Available Worldwide</p>
-      <a href="mailto:hello@joshmcguigan.com" class="footer-email">hello@joshmcguigan.com</a>
+      <a href="mailto:hello@joshmcguigan.com" class="footer-email">josh@joshmcguigan.nz</a>
     </div>
     <div class="footer-center">
       <p class="footer-center-label">Site Index</p>
@@ -415,7 +415,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
   btn.innerHTML = 'Sending&hellip;';
 
   try {
-    const res = await fetch('https://formspree.io/f/YOUR_FORMSPREE_ID', {
+    const res = await fetch('https://formspree.io/f/xaqgennd', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({ name, email, subject, message })
