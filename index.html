@@ -273,15 +273,15 @@ nav a:hover::after{transform:scaleX(1)}
 }
 .about-glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(140,175,255,0.55),transparent)}
 .about-btn{
-  display:inline-block;font-family:'Cormorant Garamond',serif;
-  font-size:1.9rem;font-weight:300;font-style:italic;
+  display:inline-block;font-family:'Archivo Black',sans-serif;
+  font-size:1.9rem;font-weight:900;font-style:normal;
   color:rgba(200,218,255,0.95);text-decoration:none;margin-bottom:1.4rem;
   position:relative;transition:color .25s ease;letter-spacing:0.02em;
 }
 .about-btn::after{
   content:'';position:absolute;bottom:-3px;left:0;right:0;
   height:1px;background:rgba(200,218,255,0.45);
-  transform:scaleX(0.35);transform-origin:left;
+  transform:scaleX(0);transform-origin:center;
   transition:transform .35s cubic-bezier(.25,.46,.45,.94),background .25s;
 }
 .about-btn:hover{color:#fff}
@@ -426,7 +426,7 @@ nav a:hover::after{transform:scaleX(1)}
 
 <section id="about" aria-label="About">
   <div class="about-glass">
-    <a href="about.html" class="about-btn">About Me</a>
+    <a href="about.html" class="about-btn">ABOUT ME</a>
     <p>Josh McGuigan is an astrophotographer and tour guide, based in the Mackenzie Country of New Zealand&#39;s South Island. When the conditions aren&#39;t ideal for shooting the night sky, you can find him capturing New Zealand&#39;s dramatic landscapes &#8212; or getting ready for the next big mission. Available now for work in New Zealand and worldwide.</p>
   </div>
 </section>
