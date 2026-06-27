@@ -305,10 +305,10 @@ footer{position:relative;z-index:1}
   <!-- LEFT IMAGE COLUMN -->
   <div class="prints-images" aria-hidden="true">
     <div class="para-frame ph-1">
-      <img src="images/gallery/astro-1.jpg" alt="" onerror="this.style.display='none'">
+      <img src="images/gallery/astro-4.jpg" alt="" onerror="this.style.display='none'">
     </div>
     <div class="para-frame ph-4">
-      <img src="images/gallery/landscape-2.jpg" alt="" onerror="this.style.display='none'">
+      <img src="images/gallery/land-1.jpg" alt="" onerror="this.style.display='none'">
     </div>
     <div class="para-frame ph-2">
       <img src="images/gallery/aurora-1.jpg" alt="" onerror="this.style.display='none'">
@@ -389,7 +389,7 @@ footer{position:relative;z-index:1}
 
       <div class="success-msg" id="successMsg" role="alert">
         <span class="success-icon">✦</span>
-        <p>Thank you for your message. I will endeavour to reply ASAP, however please allow 2–3 working days for me to get back to you. I may be busy making magic happen, without cell service!</p>
+        <p>Thank you for your inquiry. I will endeavour to reply ASAP, however please allow 2–3 working days for me to get back to you. I may be busy making magic happen, without cell service!</p>
       </div>
     </div>
   </div>
@@ -397,13 +397,13 @@ footer{position:relative;z-index:1}
   <!-- RIGHT IMAGE COLUMN -->
   <div class="prints-images right" aria-hidden="true">
     <div class="para-frame ph-5">
-      <img src="images/gallery/longexp-1.jpg" alt="" onerror="this.style.display='none'">
+      <img src="images/gallery/astro-7.jpg" alt="" onerror="this.style.display='none'">
     </div>
     <div class="para-frame ph-3">
-      <img src="images/gallery/astro-3.jpg" alt="" onerror="this.style.display='none'">
+      <img src="images/gallery/aurora-2.jpg" alt="" onerror="this.style.display='none'">
     </div>
     <div class="para-frame ph-6">
-      <img src="images/gallery/landscape-4.jpg" alt="" onerror="this.style.display='none'">
+      <img src="images/gallery/land-10.jpg" alt="" onerror="this.style.display='none'">
     </div>
   </div>
 
@@ -413,7 +413,7 @@ footer{position:relative;z-index:1}
   <div class="footer-main">
     <div class="footer-left">
       <p class="footer-location">Based in New Zealand &mdash; Available Worldwide</p>
-      <a href="mailto:hello@joshmcguigan.com" class="footer-email">hello@joshmcguigan.com</a>
+      <a href="mailto:josh@joshmcguigan.nz" class="footer-email">josh@joshmcguigan.nz</a>
     </div>
     <div class="footer-center">
       <p class="footer-center-label">Site Index</p>
@@ -460,7 +460,7 @@ document.getElementById('printsForm').addEventListener('submit', async function(
   btn.style.pointerEvents = 'none';
   btn.innerHTML = 'Sending&hellip;';
   try {
-    const res = await fetch('https://formspree.io/f/YOUR_FORMSPREE_ID', {
+    const res = await fetch('https://formspree.io/f/xlgybzlb', {
       method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},
       body:JSON.stringify({name, email, location, photo, size, paper, notes})
