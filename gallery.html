@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery — Josh McGuigan Photography</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Raleway:wght@300;400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--glass-blur:blur(28px) saturate(180%);--deep:#03080f}
+html{scroll-behavior:smooth}
+body{background:var(--deep);color:rgba(255,255,255,0.94);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden;min-height:100vh}
+
+/* NAV */
+nav{position:fixed;top:1.5rem;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;background:rgba(255,255,255,0.10);border:none;backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border-radius:100px;padding:0.4rem 0.6rem;box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1.5px 0 rgba(255,255,255,0.22),inset 0 -1px 0 rgba(0,0,0,0.18);white-space:nowrap}
+nav a{font-size:0.72rem;font-weight:400;letter-spacing:0.13em;text-transform:uppercase;color:rgba(255,255,255,0.72);text-decoration:none;padding:0.4rem 1rem;position:relative;transition:color .25s ease}
+nav a::after{content:'';position:absolute;bottom:2px;left:1rem;right:1rem;height:1px;background:rgba(255,255,255,0.85);transform:scaleX(0);transform-origin:center;transition:transform .3s cubic-bezier(.25,.46,.45,.94)}
+nav a:hover{color:#fff}
+nav a:hover::after{transform:scaleX(1)}
+.nav-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,0.22);margin:0 .15rem;flex-shrink:0}
+
+/* PAGE */
+.page-wrap{position:relative;z-index:1;padding:6rem 3rem 6rem;max-width:1400px;margin:0 auto}
+
+/* HEADER — all centred */
+.gallery-header{
+  text-align:center;
+  margin-bottom:2.5rem;
+}
+.back-link{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);text-decoration:none;
+  margin-bottom:1.25rem;transition:color .2s ease;
+}
+.back-link:hover{color:rgba(255,255,255,0.7)}
+.gallery-title{
+  font-family:'Archivo Black',sans-serif;
+  font-size:clamp(2.5rem,6vw,5rem);font-weight:900;letter-spacing:-0.01em;line-height:1;
+  background:linear-gradient(160deg,rgba(255,255,255,0.92) 0%,rgba(200,218,255,0.72) 50%,rgba(255,255,255,0.78) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 -1px 0 rgba(255,255,255,0.3)) drop-shadow(0 4px 20px rgba(80,120,255,0.18));
+  margin-bottom:0.5rem;
+}
+.gallery-sub{
+  font-family:'Raleway',sans-serif;font-size:0.8rem;font-weight:300;
+  color:rgba(255,255,255,0.38);letter-spacing:0.06em;
+  margin-bottom:1.75rem;
+  min-height:1.2em;
+}
+
+/* GENRE TABS — centred */
+.genre-tabs{
+  display:flex;align-items:center;justify-content:center;
+  gap:0.5rem;flex-wrap:wrap;
+}
+.genre-btn{
+  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.16);
+  backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);
+  color:rgba(255,255,255,0.55);font-family:'Inter',sans-serif;font-size:.68rem;font-weight:400;
+  letter-spacing:.16em;text-transform:uppercase;padding:.45rem 1.1rem;border-radius:100px;cursor:pointer;
+  transition:all .25s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.genre-btn:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.85)}
+.genre-btn.active{background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.48);color:#fff;box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.25),0 0 20px rgba(140,175,255,0.12)}
+
+/* DIVIDER */
+.header-divider{
+  width:40px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
+  margin:1.75rem auto 2rem;
+}
+
+/* MASONRY GRID */
+.gallery-grid{columns:4;column-gap:1rem}
+.gallery-item{
+  break-inside:avoid;margin-bottom:1rem;border-radius:10px;overflow:hidden;
+  position:relative;cursor:pointer;border:1px solid rgba(255,255,255,0.07);
+  transition:transform .35s cubic-bezier(.25,.46,.45,.94),box-shadow .35s ease,filter .35s ease;
+  filter:brightness(0.88);
+}
+.gallery-item:hover{transform:scale(1.025) translateY(-3px);box-shadow:0 14px 40px rgba(0,0,0,0.65),0 0 0 1px rgba(140,175,255,0.22);filter:brightness(1.05);z-index:2}
+.gallery-item img{display:block;width:100%;height:auto;transition:transform .5s ease;pointer-events:none}
+.gallery-item:hover img{transform:scale(1.03)}
+.gallery-item-ph{width:100%;display:block}
+.gallery-item-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(3,8,20,0.75) 0%,transparent 50%);opacity:0;transition:opacity .3s ease;display:flex;align-items:flex-end;padding:0.9rem 1rem}
+.gallery-item:hover .gallery-item-overlay{opacity:1}
+.gallery-item-caption{font-size:0.65rem;letter-spacing:0.1em;color:rgba(255,255,255,.88);font-weight:300;text-transform:uppercase}
+
+/* Placeholder colors */
+.ph-a1{background:linear-gradient(160deg,#060d20,#1a2a50,#0d1a38)}
+.ph-a2{background:linear-gradient(145deg,#080e22,#142048,#0a1828)}
+.ph-a3{background:linear-gradient(130deg,#040810,#0c1838,#060f22)}
+.ph-a4{background:linear-gradient(155deg,#0d1530,#1e3055,#0a1525)}
+.ph-a5{background:linear-gradient(125deg,#050b1c,#102042,#1a2848)}
+.ph-au1{background:linear-gradient(150deg,#050f18,#0a2832,#0f1e3a)}
+.ph-au2{background:linear-gradient(140deg,#040e12,#083024,#0a2238)}
+.ph-au3{background:linear-gradient(160deg,#050c16,#0c2828,#082035)}
+.ph-l1{background:linear-gradient(145deg,#0a1a0a,#1a3a1a,#0d200d)}
+.ph-l2{background:linear-gradient(155deg,#101a08,#243a10,#18280a)}
+.ph-l3{background:linear-gradient(130deg,#080c06,#162a0e,#1c3018)}
+.ph-g1{background:linear-gradient(150deg,#041208,#083020,#041a10)}
+.ph-g2{background:linear-gradient(140deg,#040e0a,#062818,#041510)}
+.ph-g3{background:linear-gradient(160deg,#030a06,#052010,#04180c)}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+.lightbox.active{opacity:1;pointer-events:all}
+.lightbox-backdrop{position:absolute;inset:0;background:rgba(3,8,15,0.45);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);cursor:pointer}
+.lightbox-img-wrap{position:relative;z-index:2;max-width:88vw;max-height:88vh;display:flex;align-items:center;justify-content:center;transform:scale(0.88);transition:transform 0.38s cubic-bezier(.25,.46,.45,.94)}
+.lightbox.active .lightbox-img-wrap{transform:scale(1)}
+.lightbox-img{max-width:88vw;max-height:86vh;object-fit:contain;border-radius:10px;box-shadow:0 40px 100px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.08);display:block;transition:opacity 0.18s ease}
+.lb-btn{position:fixed;z-index:3;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.22);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:rgba(255,255,255,0.82);font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .22s ease;box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.18),0 4px 20px rgba(0,0,0,.4)}
+.lb-btn:hover{background:rgba(255,255,255,0.18);border-color:rgba(255,255,255,0.42);color:#fff}
+.lb-close{top:1.5rem;right:1.5rem}
+.lb-prev{left:1.5rem;top:50%;transform:translateY(-50%)}
+.lb-next{right:1.5rem;top:50%;transform:translateY(-50%)}
+
+/* FOOTER */
+footer{position:relative;z-index:1}
+.footer-main{padding:4rem 4rem 2.5rem;display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:3rem}
+.footer-left .footer-location{font-size:.65rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.7rem}
+.footer-left .footer-email{font-family:'Archivo Black',sans-serif;font-size:1.4rem;font-weight:900;color:rgba(190,210,255,0.85);text-decoration:none;transition:color .22s;display:block;letter-spacing:-0.01em}
+.footer-left .footer-email:hover{color:#fff}
+.footer-center-label{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:1rem;text-align:center}
+.footer-index{list-style:none;display:flex;flex-direction:column;gap:.5rem;align-items:center}
+.footer-index a{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,0.42);text-decoration:none;transition:color .2s;position:relative}
+.footer-index a::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:rgba(255,255,255,0.5);transform:scaleX(0);transform-origin:center;transition:transform .28s ease}
+.footer-index a:hover{color:rgba(255,255,255,0.78)}
+.footer-index a:hover::after{transform:scaleX(1)}
+.footer-right{display:flex;flex-direction:column;align-items:flex-end;gap:1rem}
+.footer-social-label{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,0.25)}
+.social-btns{display:flex;gap:.65rem}
+.social-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.20);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:rgba(255,255,255,0.65);text-decoration:none;transition:all .25s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,0.15),0 4px 16px rgba(0,0,0,0.3)}
+.social-btn:hover{background:rgba(255,255,255,0.16);border-color:rgba(255,255,255,0.42);color:#fff;transform:translateY(-2px)}
+.social-btn svg{width:18px;height:18px;fill:currentColor}
+.footer-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);margin:0 4rem}
+.footer-copy{padding:1.25rem 4rem 2rem;text-align:center;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,0.2)}
+.footer-copy a{color:rgba(140,175,255,.45);text-decoration:none;transition:color .2s}
+.footer-copy a:hover{color:rgba(170,200,255,.8)}
+
+@media(max-width:1100px){.gallery-grid{columns:3}}
+@media(max-width:750px){.gallery-grid{columns:2}.page-wrap{padding:5rem 1.25rem 4rem}}
+@media(max-width:480px){.gallery-grid{columns:1}.footer-main{grid-template-columns:1fr;padding:3rem 2rem 2rem;gap:2.5rem}.footer-right{align-items:flex-start}.footer-divider,.footer-copy{margin:0 2rem}}
+</style>
+</head>
+<body>
+
+<nav aria-label="Site navigation">
+  <a href="index.html">Home</a>
+  <div class="nav-dot"></div>
+  <a href="galleries.html">Gallery</a>
+  <div class="nav-dot"></div>
+  <a href="about.html">About</a>
+  <div class="nav-dot"></div>
+  <a href="prints.html">Prints</a>
+  <div class="nav-dot"></div>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="gallery-header">
+    <a href="galleries.html" class="back-link">&#8592; &nbsp;All galleries</a>
+    <h1 class="gallery-title" id="galleryTitle">Gallery</h1>
+    <p class="gallery-sub" id="gallerySub"></p>
+    <div class="genre-tabs" id="genreTabs">
+      <button class="genre-btn" data-g="astro">Astrophotography</button>
+      <button class="genre-btn" data-g="aurora">Aurora</button>
+      <button class="genre-btn" data-g="landscape">Landscape</button>
+      <button class="genre-btn" data-g="glowworms">Glowworms</button>
+    </div>
+  </div>
+
+  <div class="header-divider" aria-hidden="true"></div>
+
+  <div class="gallery-grid" id="galleryGrid"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <div class="lightbox-backdrop" id="lbBackdrop"></div>
+  <div class="lightbox-img-wrap">
+    <img class="lightbox-img" id="lbImg" src="" alt="">
+  </div>
+  <button class="lb-btn lb-close" id="lbClose" aria-label="Close">&#10005;</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous">&#8592;</button>
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Next">&#8594;</button>
+</div>
+
+<footer>
+  <div class="footer-main">
+    <div class="footer-left">
+      <p class="footer-location">Based in New Zealand &mdash; Available Worldwide</p>
+      <a href="mailto:hello@joshmcguigan.com" class="footer-email">hello@joshmcguigan.com</a>
+    </div>
+    <div class="footer-center">
+      <p class="footer-center-label">Site Index</p>
+      <ul class="footer-index">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="galleries.html">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="prints.html">Prints</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-right">
+      <span class="footer-social-label">Follow</span>
+      <div class="social-btns">
+        <a href="https://instagram.com/yourhandle" class="social-btn" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+        <a href="https://youtube.com/@yourhandle" class="social-btn" aria-label="YouTube" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></a>
+        <a href="https://facebook.com/yourpage" class="social-btn" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-divider"></div>
+  <p class="footer-copy">&copy; 2025 Josh McGuigan &nbsp;&middot;&nbsp; All rights reserved &nbsp;&middot;&nbsp; <a href="privacy.html">Privacy</a></p>
+</footer>
+
+<script>
+const galleries = {
+  astro: {
+    title: 'Astrophotography',
+    sub: 'Night skies in New Zealand + Worldwide',
+    images: [
+      { file:'astro-1',  ratio:'2/3',  caption:'Milky Way Arch — Mackenzie Basin' },
+      { file:'astro-2',  ratio:'16/9', caption:'Galactic Core — Lake Tekapo' },
+      { file:'astro-3',  ratio:'2/3',  caption:'Southern Cross — Coromandel' },
+      { file:'astro-4',  ratio:'4/5',  caption:'Star Field — Aoraki' },
+      { file:'astro-5',  ratio:'3/2',  caption:'Deep Sky Panorama — Fiordland' },
+      { file:'astro-6',  ratio:'2/3',  caption:'Lunar Rise — Kaikōura' },
+      { file:'astro-7',  ratio:'16/9', caption:'Milky Way & Mountains — Southern Alps' },
+      { file:'astro-8',  ratio:'3/2',  caption:'Zodiacal Light — Central Otago' },
+      { file:'astro-9',  ratio:'2/3',  caption:'Star Trails — Canterbury Plains' },
+      { file:'astro-10', ratio:'1/1',  caption:'Magellanic Cloud — Mackenzie Basin' },
+      { file:'astro-11', ratio:'16/9', caption:'Gegenschein — Southland' },
+      { file:'astro-12', ratio:'4/5',  caption:'Night Sky — Wānaka' },
+      { file:'astro-13', ratio:'2/3',  caption:'Perseids — Lake Pukaki' },
+      { file:'astro-14', ratio:'3/2',  caption:'Comet Panorama — Mackenzie Basin' },
+      { file:'astro-15', ratio:'2/3',  caption:'Orion Rising — West Coast' },
+      { file:'astro-16', ratio:'16/9', caption:'Sagittarius — Tekapo' },
+      { file:'astro-17', ratio:'4/5',  caption:'Scorpius — Central Otago' },
+      { file:'astro-18', ratio:'2/3',  caption:'Dark Nebula — Mackenzie' },
+      { file:'astro-19', ratio:'3/2',  caption:'Wide Field — Fiordland' },
+      { file:'astro-20', ratio:'1/1',  caption:'Core Detail — Aoraki Dark Sky' },
+    ]
+  },
+  aurora: {
+    title: 'Aurora',
+    sub: '',
+    images: [
+      { file:'aurora-1',  ratio:'3/2',  caption:'Aurora Australis — Lake Tekapo' },
+      { file:'aurora-2',  ratio:'2/3',  caption:'Southern Lights — Fiordland' },
+      { file:'aurora-3',  ratio:'16/9', caption:'Green Curtain — Southland' },
+      { file:'aurora-4',  ratio:'4/5',  caption:'Aurora Arch — Wānaka' },
+      { file:'aurora-5',  ratio:'1/1',  caption:'Purple Aurora — Otago' },
+      { file:'aurora-6',  ratio:'2/3',  caption:'Storm Aurora — Canterbury' },
+      { file:'aurora-7',  ratio:'3/2',  caption:'Aurora & Milky Way — Lake Tekapo' },
+      { file:'aurora-8',  ratio:'16/9', caption:'Red Corona — Mackenzie Basin' },
+      { file:'aurora-9',  ratio:'2/3',  caption:'Aurora Bay — The Catlins' },
+      { file:'aurora-10', ratio:'3/2',  caption:'Pillars — Stewart Island' },
+      { file:'aurora-11', ratio:'1/1',  caption:'Ribbons — Southland' },
+      { file:'aurora-12', ratio:'4/5',  caption:'Aurora Rising — Otago Peninsula' },
+      { file:'aurora-13', ratio:'2/3',  caption:'Pink Aurora — Canterbury' },
+      { file:'aurora-14', ratio:'16/9', caption:'Horizon Glow — Southland' },
+      { file:'aurora-15', ratio:'3/2',  caption:'Flickering Green — Fiordland' },
+      { file:'aurora-16', ratio:'2/3',  caption:'Double Band — Catlins' },
+      { file:'aurora-17', ratio:'4/5',  caption:'Rays — Stewart Island' },
+      { file:'aurora-18', ratio:'16/9', caption:'Midnight — Mackenzie' },
+      { file:'aurora-19', ratio:'2/3',  caption:'Corona — Otago' },
+      { file:'aurora-20', ratio:'3/2',  caption:'Curtain Call — Southland' },
+    ]
+  },
+  landscape: {
+    title: 'Landscape',
+    sub: '',
+    images: [
+      { file:'landscape-1',  ratio:'16/9', caption:'Sunrise — Aoraki / Mt Cook' },
+      { file:'landscape-2',  ratio:'2/3',  caption:'Fog Layer — Wānaka' },
+      { file:'landscape-3',  ratio:'3/2',  caption:'Golden Hour — Marlborough Sounds' },
+      { file:'landscape-4',  ratio:'1/1',  caption:'Storm Light — West Coast' },
+      { file:'landscape-5',  ratio:'4/5',  caption:'Autumn Reflections — Central Otago' },
+      { file:'landscape-6',  ratio:'16/9', caption:'Lake Matheson — Fox Glacier' },
+      { file:'landscape-7',  ratio:'2/3',  caption:'Tussock Plains — Mackenzie Basin' },
+      { file:'landscape-8',  ratio:'3/2',  caption:'Coastal Dusk — Kaikōura' },
+      { file:'landscape-9',  ratio:'2/3',  caption:"Alpine Meadow — Arthur's Pass" },
+      { file:'landscape-10', ratio:'16/9', caption:'Punakaiki Pancakes — West Coast' },
+      { file:'landscape-11', ratio:'1/1',  caption:'Ridge Light — The Remarkables' },
+      { file:'landscape-12', ratio:'4/5',  caption:'Estuary at Dusk — Canterbury' },
+      { file:'landscape-13', ratio:'3/2',  caption:'Mirror Lake — Fiordland' },
+      { file:'landscape-14', ratio:'2/3',  caption:'Beech Forest — Nelson Lakes' },
+      { file:'landscape-15', ratio:'16/9', caption:'Braided River — Canterbury Plains' },
+      { file:'landscape-16', ratio:'2/3',  caption:'Sea Stack — Kaikōura' },
+      { file:'landscape-17', ratio:'4/5',  caption:'Vineyard — Marlborough' },
+      { file:'landscape-18', ratio:'3/2',  caption:'Lupins — Lake Tekapo' },
+      { file:'landscape-19', ratio:'16/9', caption:'Sunset Ridge — Otago' },
+      { file:'landscape-20', ratio:'2/3',  caption:'Coastal Bluff — Wellington' },
+    ]
+  },
+  glowworms: {
+    title: 'Glowworms',
+    sub: 'Glowing labyrinths deep under New Zealand',
+    images: [
+      { file:'glow-1',  ratio:'2/3',  caption:'Cave Ceiling — Waitomo' },
+      { file:'glow-2',  ratio:'3/2',  caption:'Underground River — Westland' },
+      { file:'glow-3',  ratio:'4/5',  caption:'Galaxy Cave — Waikato' },
+      { file:'glow-4',  ratio:'16/9', caption:'Blue Constellation — Waitomo' },
+      { file:'glow-5',  ratio:'2/3',  caption:'Ancient Cathedral — Southland' },
+      { file:'glow-6',  ratio:'1/1',  caption:'Reflection Pool — Westland' },
+      { file:'glow-7',  ratio:'2/3',  caption:'Milky Grotto — Nelson' },
+      { file:'glow-8',  ratio:'3/2',  caption:'Deep Blue — Waitomo' },
+      { file:'glow-9',  ratio:'4/5',  caption:'Living Stars — Waikato' },
+      { file:'glow-10', ratio:'16/9', caption:'Labyrinth — Westland' },
+      { file:'glow-11', ratio:'2/3',  caption:'Hanging Gardens — Nelson' },
+      { file:'glow-12', ratio:'3/2',  caption:'Tunnel Vision — Waitomo' },
+      { file:'glow-13', ratio:'1/1',  caption:'Night Bloom — Southland' },
+      { file:'glow-14', ratio:'4/5',  caption:'Constellation — Waikato' },
+      { file:'glow-15', ratio:'2/3',  caption:'Cave Pearls — Westland' },
+      { file:'glow-16', ratio:'16/9', caption:'Underground Arch — Nelson' },
+      { file:'glow-17', ratio:'2/3',  caption:'Silk Threads — Waitomo' },
+      { file:'glow-18', ratio:'3/2',  caption:'The Cathedral — Waikato' },
+      { file:'glow-19', ratio:'4/5',  caption:'Blue Drift — Southland' },
+      { file:'glow-20', ratio:'16/9', caption:'Abyss — Westland' },
+    ]
+  }
+};
+
+const phMap = {
+  astro:     ['ph-a1','ph-a2','ph-a3','ph-a4','ph-a5'],
+  aurora:    ['ph-au1','ph-au2','ph-au3','ph-au1','ph-au2'],
+  landscape: ['ph-l1','ph-l2','ph-l3','ph-l1','ph-l2'],
+  glowworms: ['ph-g1','ph-g2','ph-g3','ph-g1','ph-g2'],
+};
+
+let currentGallery = 'astro';
+let lbIndex = 0;
+let lbImages = [];
+
+function getParam(k){ return new URLSearchParams(window.location.search).get(k); }
+
+function renderGallery(key) {
+  currentGallery = key;
+  const data = galleries[key];
+  if (!data) return;
+
+  document.title = data.title + ' — Josh McGuigan Photography';
+  document.getElementById('galleryTitle').textContent = data.title;
+  const subEl = document.getElementById('gallerySub');
+  subEl.textContent = data.sub;
+  subEl.style.display = data.sub ? 'block' : 'none';
+
+  document.querySelectorAll('.genre-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.g === key);
+  });
+
+  history.replaceState(null, '', '?g=' + key);
+
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = '';
+  lbImages = data.images;
+  const phs = phMap[key] || ['ph-a1'];
+
+  data.images.forEach((img, i) => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    const [rw, rh] = img.ratio.split('/').map(Number);
+    const paddingPct = (rh / rw * 100).toFixed(2);
+    const ph = phs[i % phs.length];
+    item.innerHTML = `
+      <div class="gallery-item-ph ${ph}" style="padding-bottom:${paddingPct}%;position:relative;">
+        <img
+          src="images/gallery/${img.file}.jpg"
+          alt="${img.caption}"
+          loading="lazy"
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;"
+          onerror="this.style.opacity='0'"
+        >
+      </div>
+      <div class="gallery-item-overlay">
+        <span class="gallery-item-caption">${img.caption}</span>
+      </div>
+    `;
+    item.addEventListener('click', () => openLightbox(i));
+    grid.appendChild(item);
+  });
+}
+
+// LIGHTBOX
+const lightbox = document.getElementById('lightbox');
+const lbImg    = document.getElementById('lbImg');
+
+function openLightbox(index) {
+  lbIndex = index;
+  const img = lbImages[lbIndex];
+  lbImg.src = `images/gallery/${img.file}.jpg`;
+  lbImg.alt = img.caption;
+  lightbox.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+  setTimeout(() => { lbImg.src = ''; }, 320);
+}
+
+function lbStep(dir) {
+  lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
+  lbImg.style.opacity = '0';
+  setTimeout(() => {
+    const img = lbImages[lbIndex];
+    lbImg.src = `images/gallery/${img.file}.jpg`;
+    lbImg.alt = img.caption;
+    lbImg.style.opacity = '1';
+  }, 150);
+}
+
+document.getElementById('lbClose').addEventListener('click', e => { e.stopPropagation(); closeLightbox(); });
+document.getElementById('lbBackdrop').addEventListener('click', e => { e.stopPropagation(); closeLightbox(); });
+document.getElementById('lbPrev').addEventListener('click', e => { e.stopPropagation(); lbStep(-1); });
+document.getElementById('lbNext').addEventListener('click', e => { e.stopPropagation(); lbStep(1); });
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lbStep(-1);
+  if (e.key === 'ArrowRight') lbStep(1);
+});
+let touchStartX = 0;
+lightbox.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive:true });
+lightbox.addEventListener('touchend', e => {
+  const dx = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(dx) > 40) lbStep(dx > 0 ? 1 : -1);
+});
+
+document.querySelectorAll('.genre-btn').forEach(btn => {
+  btn.addEventListener('click', () => renderGallery(btn.dataset.g));
+});
+
+renderGallery(getParam('g') || 'astro');
+</script>
+</body>
+</html>
