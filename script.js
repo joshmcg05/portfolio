@@ -1,0 +1,21 @@
+const L=[['galleries','Galleries'],['about','About'],['prints','Prints'],['contact','Contact'],['blog','Articles & Blog']],P=document.body.dataset.page;
+const IG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor" stroke="none"/></svg>';
+const FB='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-9h3l.5-3.5h-3.5V7.300c0-1 .3-1.700 1.800-1.700H17V2.400c-.3 0-1.400-.1-2.600-.1C11.800 2.300 10 3.900 10 6.800v2.700H7V13h3v9z"/></svg>';
+const S=`<a href="https://instagram.com/" aria-label="Instagram">${IG}</a><a href="https://facebook.com/" aria-label="Facebook">${FB}</a>`;
+const star=(x,y,s)=>`<path transform="translate(${x} ${y}) scale(${s})" d="M0-10Q1.500-1.500 10 0Q1.500 1.500 0 10Q-1.500 1.500-10 0Q-1.500-1.500 0-10Z"/>`;
+document.body.insertAdjacentHTML('afterbegin',`<header id="hdr"><a class="logo" href="index.html"><svg viewBox="0 0 60 60">${star(30,11,.9)}${star(9,33,.9)}${star(30,34,.6)}${star(51,33,.7)}${star(30,52,.8)}</svg>JOSH McGUIGAN</a><div class="rt"><nav id="nav">${L.map(([p,t])=>`<a href="${p}.html"${p==P?' class="on"':''}>${t}</a>`).join('')}</nav><div class="soc">${S}</div><button id="tg" aria-label="Menu">&#9776;</button></div></header>`);
+document.body.insertAdjacentHTML('beforeend',`<footer>${S}</footer>`);
+const h=document.getElementById('hdr'),n=document.getElementById('nav');
+document.getElementById('tg').onclick=()=>n.classList.toggle('o');
+n.onclick=e=>e.target.tagName=='A'&&n.classList.remove('o');
+const sc=()=>h.classList.toggle('s',scrollY>40);sc();addEventListener('scroll',sc,{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.rv').forEach(e=>io.observe(e));
+const tk=document.querySelector('.trk');
+if(tk){const c=tk.parentElement;tk.innerHTML+=tk.innerHTML+tk.innerHTML;const n3=tk.children.length/3;let i=n3+1;
+ const go=(k,a=1)=>{i=k;tk.style.transition=a?'':'none';const w=tk.children[0].offsetWidth;tk.style.transform=`translateX(${(c.clientWidth-w)/2-i*w}px)`};
+ tk.ontransitionend=()=>{if(i>=2*n3)go(i-n3,0);else if(i<n3)go(i+n3,0)};
+ document.getElementById('pv').onclick=()=>go(i-1);document.getElementById('nx').onclick=()=>go(i+1);
+ addEventListener('resize',()=>go(i,0));go(i,0)}
+document.querySelectorAll('.card .ph').forEach(p=>{p.onmousemove=e=>{const r=p.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;p.style.transform=`rotateY(${x*8}deg) rotateX(${-y*8}deg)`};p.onmouseleave=()=>p.style.transform=''});
+document.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chips button').forEach(x=>x.classList.toggle('on',x==b));document.querySelectorAll('[data-cat]').forEach(c=>c.classList.toggle('h',b.dataset.f!='all'&&c.dataset.cat!=b.dataset.f))});
