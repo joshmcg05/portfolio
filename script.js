@@ -11,12 +11,14 @@ const sc=()=>h.classList.toggle('s',scrollY>40);sc();addEventListener('scroll',s
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
 document.querySelectorAll('.rv').forEach(e=>io.observe(e));
 const tk=document.querySelector('.trk');
-if(tk){const c=tk.parentElement,K=5;tk.innerHTML=tk.innerHTML.repeat(K);const n=tk.children.length/K;let i=2*n+1,t;
+if(tk){const c=tk.parentElement,n=tk.children.length,K=Math.max(3,Math.ceil(10/n));tk.innerHTML=tk.innerHTML.repeat(K);
+ const m=n*Math.floor(K/2);let busy=0,q=0,dir=0;
  const gap=()=>parseFloat(getComputedStyle(tk).columnGap)||0;
  const pos=k=>{let x=0;for(let j=0;j<k;j++)x+=tk.children[j].offsetWidth+gap();return c.clientWidth/2-(x+tk.children[k].offsetWidth/2)};
- const go=(k,a=1)=>{i=k;tk.style.transition=a?'':'none';void tk.offsetWidth;tk.style.transform=`translateX(${pos(i)}px)`;
-  clearTimeout(t);t=setTimeout(()=>{const r=((i%n)+n)%n;if(i!=2*n+r)go(2*n+r,0)},1000)};
- document.getElementById('pv').onclick=()=>go(i-1);document.getElementById('nx').onclick=()=>go(i+1);
- const re=()=>go(i,0);addEventListener('resize',re);addEventListener('load',re);tk.querySelectorAll('img').forEach(m=>m.addEventListener('load',re));re()}
+ const put=(k,a)=>{tk.style.transition=a?'':'none';tk.style.transform=`translateX(${pos(k)}px)`;void tk.offsetWidth};
+ const step=d=>{if(busy){q=d;return}busy=1;dir=d;if(d<0){tk.prepend(tk.lastElementChild);put(m+1,0)}put(m+d,1)};
+ tk.addEventListener('transitionend',e=>{if(e.target!==tk||e.propertyName!=='transform'||!busy)return;if(dir>0)tk.append(tk.firstElementChild);put(m,0);busy=0;if(q){const d=q;q=0;step(d)}});
+ document.getElementById('pv').onclick=()=>step(-1);document.getElementById('nx').onclick=()=>step(1);
+ const re=()=>{if(!busy)put(m,0)};addEventListener('resize',re);addEventListener('load',re);tk.querySelectorAll('img').forEach(i=>i.addEventListener('load',re));re()}
 document.querySelectorAll('.card .ph').forEach(p=>{p.onmousemove=e=>{const r=p.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;p.style.transform=`rotateY(${x*8}deg) rotateX(${-y*8}deg)`};p.onmouseleave=()=>p.style.transform=''});
 document.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chips button').forEach(x=>x.classList.toggle('on',x==b));document.querySelectorAll('[data-cat]').forEach(c=>c.classList.toggle('h',b.dataset.f!='all'&&c.dataset.cat!=b.dataset.f))});
