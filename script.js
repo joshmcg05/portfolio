@@ -1,7 +1,7 @@
 const L=[['galleries','Galleries'],['about','About'],['prints','Prints'],['contact','Contact'],['blog','Articles & Blog']],P=document.body.dataset.page;
 const IG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor" stroke="none"/></svg>';
 const FB='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-9h3l.5-3.5h-3.5V7.300c0-1 .3-1.700 1.800-1.700H17V2.400c-.3 0-1.400-.1-2.600-.1C11.800 2.300 10 3.900 10 6.800v2.700H7V13h3v9z"/></svg>';
-const S=`<a href="https://instagram.com/jshmcguigan" aria-label="Instagram">${IG}</a><a href="https://facebook.com/joshmcguiganphotography" aria-label="Facebook">${FB}</a>`;
+const S=`<a href="https://instagram.com/jshmcguigan" target="_blank" rel="noopener" aria-label="Instagram">${IG}</a><a href="https://facebook.com/joshmcguiganphotography" target="_blank" rel="noopener" aria-label="Facebook">${FB}</a>`;
 document.body.insertAdjacentHTML('afterbegin',`<header id="hdr"><a class="logo" href="index.html"><img src="images/logo.png" alt="">Josh McGuigan</a><div class="rt"><nav id="nav">${L.map(([p,t])=>`<a href="${p}.html"${p==P?' class="on"':''}>${t}</a>`).join('')}</nav><div class="soc">${S}</div><button id="tg" aria-label="Menu">&#9776;</button></div></header>`);
 document.body.insertAdjacentHTML('beforeend',`<footer>${S}</footer>`);
 const h=document.getElementById('hdr'),n=document.getElementById('nav');
@@ -11,9 +11,11 @@ const sc=()=>h.classList.toggle('s',scrollY>40);sc();addEventListener('scroll',s
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
 document.querySelectorAll('.rv').forEach(e=>io.observe(e));
 const tk=document.querySelector('.trk');
-if(tk){const c=tk.parentElement;tk.innerHTML+=tk.innerHTML+tk.innerHTML;const n3=tk.children.length/3;let i=n3+1;
- const go=(k,a=1)=>{i=k;tk.style.transition=a?'':'none';const s=tk.children[i];tk.style.transform=`translateX(${c.clientWidth/2-(s.offsetLeft+s.offsetWidth/2)}px)`};
- tk.ontransitionend=()=>{if(i>=2*n3)go(i-n3,0);else if(i<n3)go(i+n3,0)};
+if(tk){const c=tk.parentElement,K=5;tk.innerHTML=tk.innerHTML.repeat(K);const n=tk.children.length/K;let i=2*n+1,t;
+ const gap=()=>parseFloat(getComputedStyle(tk).columnGap)||0;
+ const pos=k=>{let x=0;for(let j=0;j<k;j++)x+=tk.children[j].offsetWidth+gap();return c.clientWidth/2-(x+tk.children[k].offsetWidth/2)};
+ const go=(k,a=1)=>{i=k;tk.style.transition=a?'':'none';void tk.offsetWidth;tk.style.transform=`translateX(${pos(i)}px)`;
+  clearTimeout(t);t=setTimeout(()=>{const r=((i%n)+n)%n;if(i!=2*n+r)go(2*n+r,0)},1000)};
  document.getElementById('pv').onclick=()=>go(i-1);document.getElementById('nx').onclick=()=>go(i+1);
  const re=()=>go(i,0);addEventListener('resize',re);addEventListener('load',re);tk.querySelectorAll('img').forEach(m=>m.addEventListener('load',re));re()}
 document.querySelectorAll('.card .ph').forEach(p=>{p.onmousemove=e=>{const r=p.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;p.style.transform=`rotateY(${x*8}deg) rotateX(${-y*8}deg)`};p.onmouseleave=()=>p.style.transform=''});
