@@ -2,7 +2,7 @@ const L=[['galleries','Galleries'],['about','About'],['prints','Prints'],['conta
 const IG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor" stroke="none"/></svg>';
 const FB='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-9h3l.5-3.5h-3.5V7.300c0-1 .3-1.700 1.800-1.700H17V2.400c-.3 0-1.400-.1-2.600-.1C11.800 2.300 10 3.900 10 6.800v2.700H7V13h3v9z"/></svg>';
 const S=`<a href="https://instagram.com/" aria-label="Instagram">${IG}</a><a href="https://facebook.com/" aria-label="Facebook">${FB}</a>`;
-document.body.insertAdjacentHTML('afterbegin',`<header id="hdr"><a class="logo" href="index.html"><img src="images/logo.png" alt="">JOSH McGUIGAN</a><div class="rt"><nav id="nav">${L.map(([p,t])=>`<a href="${p}.html"${p==P?' class="on"':''}>${t}</a>`).join('')}</nav><div class="soc">${S}</div><button id="tg" aria-label="Menu">&#9776;</button></div></header>`);
+document.body.insertAdjacentHTML('afterbegin',`<header id="hdr"><a class="logo" href="index.html"><img src="images/logo.png" alt="">Josh McGuigan</a><div class="rt"><nav id="nav">${L.map(([p,t])=>`<a href="${p}.html"${p==P?' class="on"':''}>${t}</a>`).join('')}</nav><div class="soc">${S}</div><button id="tg" aria-label="Menu">&#9776;</button></div></header>`);
 document.body.insertAdjacentHTML('beforeend',`<footer>${S}</footer>`);
 const h=document.getElementById('hdr'),n=document.getElementById('nav');
 document.getElementById('tg').onclick=()=>n.classList.toggle('o');
