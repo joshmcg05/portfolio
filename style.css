@@ -11,8 +11,8 @@ p{max-width:60ch;color:var(--mut)}p+p{margin-top:1em}
 header{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:22px 5vw;transition:padding .4s}
 header::before{content:'';position:absolute;inset:0;z-index:-1;background:rgba(10,22,40,.9);backdrop-filter:blur(14px);opacity:0;transition:opacity .4s}
 header.s{padding:12px 5vw}header.s::before{opacity:1}
-.logo{display:flex;align-items:center;gap:14px;font:400 clamp(1.3rem,2.5vw,2.2rem) Lexend,sans-serif;letter-spacing:.08em;white-space:nowrap}
-.logo svg{width:1.7em;height:1.7em;fill:#fff}
+.logo{display:flex;align-items:center;gap:14px;font:600 clamp(1.3rem,2.5vw,2.2rem) Inter,sans-serif;letter-spacing:.08em;white-space:nowrap}
+.logo img{width:1.7em;height:1.7em;object-fit:contain}
 .rt{display:flex;align-items:center;gap:2.4vw}
 nav{display:flex;gap:1.7vw}
 nav a{font-size:.95rem;position:relative;padding:4px 0}
