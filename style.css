@@ -11,7 +11,7 @@ p{max-width:60ch;color:var(--mut)}p+p{margin-top:1em}
 header{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:22px 5vw;transition:padding .4s}
 header::before{content:'';position:absolute;inset:0;z-index:-1;background:rgba(10,22,40,.9);backdrop-filter:blur(14px);opacity:0;transition:opacity .4s}
 header.s{padding:12px 5vw}header.s::before{opacity:1}
-.logo{display:flex;align-items:center;gap:14px;font:600 clamp(1.3rem,2.5vw,2.2rem) Inter,sans-serif;letter-spacing:.08em;white-space:nowrap}
+.logo{display:flex;align-items:center;gap:14px;font:700 clamp(1.3rem,2.5vw,2.2rem) 'Playfair Display SC',Georgia,serif;letter-spacing:.04em;white-space:nowrap}
 .logo img{width:1.7em;height:1.7em;object-fit:contain}
 .rt{display:flex;align-items:center;gap:2.4vw}
 nav{display:flex;gap:1.7vw}
@@ -28,7 +28,9 @@ nav a:hover::after,nav a.on::after{transform:scaleX(1)}
 @keyframes in{to{opacity:1;transform:none}}
 .car{overflow:hidden;padding-bottom:calc(var(--pk) + 28px)}
 .trk{display:flex;transition:transform .9s var(--ease)}
-.sl{flex:0 0 51.5vw;aspect-ratio:495/590;background:var(--i) center/cover no-repeat,linear-gradient(160deg,hsl(var(--h) 45% 24%),hsl(calc(var(--h) + 35) 55% 8%))}
+.sl{flex:0 0 auto;height:clamp(260px,40vw,75vh);background:linear-gradient(160deg,#243a6e,#0c1830)}
+.sl:empty{min-width:clamp(200px,36vw,500px)}
+.sl img{display:block;height:100%;width:auto;max-width:none}
 .arr{display:flex;justify-content:center;gap:10px;margin-top:14px}
 .arr button{width:44px;height:42px;border:0;background:#d1d3d6;color:#111;font-size:1.4rem;cursor:pointer;transition:background .3s}.arr button:hover{background:#fff}
 .h2{position:relative;z-index:1;margin-top:calc(var(--pk) * -1);min-height:min(65vw,110vh);padding-bottom:6vw;clip-path:polygon(0 var(--pk),50% 0,100% var(--pk),100% 100%,0 100%);display:grid;place-items:center;background:url(images/hero-2.jpg) center/cover no-repeat,radial-gradient(60% 50% at 0 100%,rgba(207,216,230,.7),transparent),radial-gradient(60% 50% at 100% 100%,rgba(207,216,230,.7),transparent),linear-gradient(180deg,#1a1f4a,#6a4a6a 45%,#2a4a5a 70%,#1c2a30)}
@@ -68,5 +70,5 @@ footer{background:var(--ft);padding:34px 0;display:flex;justify-content:center;g
 footer a{display:flex}footer svg{width:28px;height:28px;color:#fff;transition:color .3s}footer a:hover svg{color:var(--ac)}
 .rv{opacity:0;transform:translateY(30px);transition:opacity 1s var(--ease),transform 1s var(--ease)}.rv.in{opacity:1;transform:none}
 .grid .rv:nth-child(3n+2){transition-delay:.12s}.grid .rv:nth-child(3n){transition-delay:.24s}
-@media(max-width:860px){.rt nav{position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;align-items:center;gap:26px;transform:translateX(100%);transition:transform .5s var(--ease)}.rt nav.o{transform:none}nav a{font-size:1.2rem}.soc{display:none}#tg{display:block;z-index:60}.split{grid-template-columns:1fr}.sec{padding:80px 5vw}.sl{flex-basis:76vw}.hl{max-width:92%}.btns{flex-direction:column;align-items:center;gap:14px}.btns .btn{width:min(300px,80vw)}.h2{min-height:100vw}.tag{max-width:86%}}
+@media(max-width:860px){.rt nav{position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;align-items:center;gap:26px;transform:translateX(100%);transition:transform .5s var(--ease)}.rt nav.o{transform:none}nav a{font-size:1.2rem}.soc{display:none}#tg{display:block;z-index:60}.split{grid-template-columns:1fr}.sec{padding:80px 5vw}.hl{max-width:92%}.btns{flex-direction:column;align-items:center;gap:14px}.btns .btn{width:min(300px,80vw)}.h2{min-height:100vw}.tag{max-width:86%}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.hl,.sub{opacity:1;transform:none}}
