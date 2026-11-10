@@ -123,8 +123,15 @@ body[data-page=galleries]{background:#14171c}
 .lb .cl::after{transform:translate(-50%,-50%) rotate(-45deg)}
 .lb .cl:hover::before,.lb .cl:hover::after{opacity:1}
 #pn{display:none;position:absolute;inset:0}
-#pn .pnlm-container{background:#000}
+#pn.pnlm-container{background:#000}
 .lb.p{background:#000}
 .lb.p #pn{display:block}
 .lb.p img,.lb.p .pv,.lb.p .nx{display:none}
 .lb .cl{z-index:2}
+.pnlm-load-box,.pnlm-lbox{display:none!important}
+.lb{transition:opacity .5s}
+.lb.w{opacity:0;pointer-events:none}
+.sp{position:fixed;inset:0;z-index:101;display:none;align-items:center;justify-content:center;background:rgba(8,9,12,.55);cursor:wait}
+.sp.o{display:flex}
+.sp::after{content:'';width:46px;height:46px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
