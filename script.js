@@ -28,12 +28,14 @@ if(mas){const cb=[...document.querySelectorAll('.cats button')],gt=document.getE
  cb.forEach(b=>b.onclick=()=>{cb.forEach(x=>x.classList.toggle('on',x==b));gt.textContent=b.dataset.t;gd.textContent=b.dataset.d;
   mas.querySelectorAll('.g').forEach(g=>g.classList.toggle('h',b.dataset.f!='all'&&g.dataset.cat!=b.dataset.f))});
  const lb=document.createElement('div');lb.className='lb';lb.innerHTML='<div id="pn"></div><button class="cl" aria-label="Close"></button><button class="pv" aria-label="Previous"></button><img alt=""><button class="nx" aria-label="Next"></button>';document.body.append(lb);
+ const sp=document.createElement('div');sp.className='sp';document.body.append(sp);sp.onclick=()=>close();
  const im=lb.querySelector('img');let list=[],k=0,vw=null;
  const show=n=>{if(!list.length)return;k=(n+list.length)%list.length;im.src=list[k].href};
- const close=()=>{if(vw){vw.destroy();vw=null}lb.classList.remove('o','p');document.body.style.overflow=''};
+ const close=()=>{if(vw){vw.destroy();vw=null}lb.classList.remove('o','p','w');sp.classList.remove('o');document.body.style.overflow=''};
  mas.onclick=e=>{const a=e.target.closest('.g');if(!a)return;e.preventDefault();
-  if(a.dataset.pano){if(!window.pannellum)return;document.body.style.overflow='hidden';lb.classList.add('o','p');
-   vw=pannellum.viewer('pn',{type:'equirectangular',panorama:a.dataset.pano,autoLoad:true,showControls:false,autoRotate:-2,hfov:100,haov:+(a.dataset.haov||360),vaov:+(a.dataset.vaov||180)});return}
+    if(a.dataset.pano){if(!window.pannellum)return;document.body.style.overflow='hidden';sp.classList.add('o');lb.classList.add('o','p','w');
+   vw=pannellum.viewer('pn',{type:'equirectangular',panorama:a.dataset.pano,autoLoad:true,showControls:false,autoRotate:-2,hfov:100,haov:+(a.dataset.haov||360),vaov:+(a.dataset.vaov||180)});
+   vw.on('load',()=>{sp.classList.remove('o');lb.classList.remove('w')});vw.on('error',()=>close());return}
   document.body.style.overflow='hidden';list=[...mas.querySelectorAll('.g:not(.h):not([data-pano])')];show(list.indexOf(a));lb.classList.add('o')};
  lb.onclick=e=>{if(e.target==lb||e.target.classList.contains('cl'))close();else if(e.target.classList.contains('pv'))show(k-1);else if(e.target.classList.contains('nx'))show(k+1)};
  addEventListener('keydown',e=>{if(!lb.classList.contains('o'))return;if(e.key=='Escape')close();if(lb.classList.contains('p'))return;if(e.key=='ArrowLeft')show(k-1);if(e.key=='ArrowRight')show(k+1)});
