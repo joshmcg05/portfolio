@@ -149,3 +149,8 @@ radial-gradient(14% 8% at 38% 64%,rgba(195,205,220,.4),transparent),
 radial-gradient(34% 22% at 8% 80%,rgba(48,40,26,.95),transparent),
 radial-gradient(12% 7% at 51% 77%,rgba(235,185,70,.4),transparent),
 linear-gradient(180deg,#05070f 0%,#090d1a 30%,#1a1c22 48%,#454538 60%,#3a2d1b 68%,#6a481d 82%,#8b6024 100%)}
+body[data-page=about]{background:#14171c}
+.ab{padding-top:150px}
+.ab .ph{max-width:380px;width:100%;margin:0 auto}
+.ab .t{font-style:normal;font-size:clamp(2rem,4.6vw,3.8rem);transform:skewX(-12deg);transform-origin:0 100%}
+@media(min-width:861px){.ab .split{grid-template-columns:minmax(0,380px) 1fr;max-width:1000px;gap:5vw}}
