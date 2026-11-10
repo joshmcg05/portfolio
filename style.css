@@ -135,3 +135,7 @@ body[data-page=galleries]{background:#14171c}
 .sp.o{display:flex}
 .sp::after{content:'';width:46px;height:46px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+.lb .hint,.lb .cp{display:none;position:absolute;left:0;right:0;z-index:2;text-align:center;pointer-events:none;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.7)}
+.lb .hint{top:26px;font:600 .95rem Inter,sans-serif;letter-spacing:.05em}
+.lb .cp{bottom:22px;font:400 .85rem Inter,sans-serif;opacity:.8}
+.lb.p .hint,.lb.p .cp{display:block}
