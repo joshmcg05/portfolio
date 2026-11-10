@@ -117,3 +117,8 @@ body[data-page=galleries]{background:#14171c}
 .car{padding-bottom:0}
 .arr{margin-top:0;padding:22px 0}
 .intro{margin:90px auto}
+.lb .cl{top:18px;right:2vw;margin-top:0;width:56px;height:56px}
+.lb .cl::before,.lb .cl::after{content:'';position:absolute;top:50%;left:50%;width:26px;height:2px;border:0;background:#fff;opacity:.75;transition:opacity .3s}
+.lb .cl::before{transform:translate(-50%,-50%) rotate(45deg)}
+.lb .cl::after{transform:translate(-50%,-50%) rotate(-45deg)}
+.lb .cl:hover::before,.lb .cl:hover::after{opacity:1}
