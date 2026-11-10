@@ -22,3 +22,15 @@ if(tk){const c=tk.parentElement,n=tk.children.length,K=Math.max(3,Math.ceil(10/n
  const re=()=>{if(!busy)put(m,0)};addEventListener('resize',re);addEventListener('load',re);tk.querySelectorAll('img').forEach(i=>i.addEventListener('load',re));re()}
 document.querySelectorAll('.card .ph').forEach(p=>{p.onmousemove=e=>{const r=p.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;p.style.transform=`rotateY(${x*8}deg) rotateX(${-y*8}deg)`};p.onmouseleave=()=>p.style.transform=''});
 document.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chips button').forEach(x=>x.classList.toggle('on',x==b));document.querySelectorAll('[data-cat]').forEach(c=>c.classList.toggle('h',b.dataset.f!='all'&&c.dataset.cat!=b.dataset.f))});
+const mas=document.querySelector('.mas');
+if(mas){const cb=[...document.querySelectorAll('.cats button')],gt=document.getElementById('gt'),gd=document.getElementById('gd');
+ cb.forEach(b=>b.onclick=()=>{cb.forEach(x=>x.classList.toggle('on',x==b));gt.textContent=b.dataset.t;gd.textContent=b.dataset.d;
+  mas.querySelectorAll('.g').forEach(g=>g.classList.toggle('h',b.dataset.f!='all'&&g.dataset.cat!=b.dataset.f))});
+ const lb=document.createElement('div');lb.className='lb';lb.innerHTML='<button class="pv" aria-label="Previous"></button><img alt=""><button class="nx" aria-label="Next"></button>';document.body.append(lb);
+ const im=lb.querySelector('img');let list=[],k=0;
+ const show=n=>{k=(n+list.length)%list.length;im.src=list[k].href};
+ const close=()=>{lb.classList.remove('o');document.body.style.overflow=''};
+ mas.onclick=e=>{const a=e.target.closest('.g');if(!a)return;e.preventDefault();list=[...mas.querySelectorAll('.g:not(.h)')];show(list.indexOf(a));lb.classList.add('o');document.body.style.overflow='hidden'};
+ lb.onclick=e=>{if(e.target==lb)close();else if(e.target.classList.contains('pv'))show(k-1);else if(e.target.classList.contains('nx'))show(k+1)};
+ addEventListener('keydown',e=>{if(!lb.classList.contains('o'))return;if(e.key=='Escape')close();if(e.key=='ArrowLeft')show(k-1);if(e.key=='ArrowRight')show(k+1)});
+ let sx=0;lb.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});lb.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)show(k+(d<0?1:-1))})}
