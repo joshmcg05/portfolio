@@ -25,6 +25,9 @@ nav a:hover::after,nav a.on::after{transform:scaleX(1)}
 .hl::after{content:'';display:block;width:92%;margin:.25em auto 0;border-bottom:1px solid rgba(255,255,255,.7)}
 .sub{font:italic 600 clamp(.85rem,1.9vw,1.55rem)/1.4 Inter,sans-serif;text-transform:uppercase;color:var(--ac);max-width:88%;margin:.9em auto 0}
 .hl,.sub{opacity:0;transform:translateY(24px);animation:in 1.4s var(--ease) .2s forwards}.sub{animation-delay:.5s}
+.scroll{position:absolute;left:0;right:0;bottom:4vh;width:max-content;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:12px;font:600 .75rem Inter,sans-serif;letter-spacing:.3em;text-transform:uppercase;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.6);opacity:0;animation:in 1.2s ease 1.6s forwards}
+.scroll i{width:12px;height:12px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(45deg);animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(45deg)}50%{transform:translateY(8px) rotate(45deg)}}
 @keyframes in{to{opacity:1;transform:none}}
 .car{overflow:hidden;padding-bottom:calc(var(--pk) + 28px)}
 .trk{display:flex;transition:transform .9s var(--ease)}
@@ -87,4 +90,4 @@ footer svg{width:28px;height:28px;color:#fff;transition:color .3s}.fs a:hover sv
 .rv{opacity:0;transform:translateY(30px);transition:opacity 1s var(--ease),transform 1s var(--ease)}.rv.in{opacity:1;transform:none}
 .grid .rv:nth-child(3n+2){transition-delay:.12s}.grid .rv:nth-child(3n){transition-delay:.24s}
 @media(max-width:860px){.rt nav{position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;align-items:center;gap:26px;transform:translateX(100%);transition:transform .5s var(--ease)}.rt nav.o{transform:none}nav a{font-size:1.2rem}.soc{display:none}#tg{display:block;z-index:60}.split{grid-template-columns:1fr}.sec{padding:80px 5vw}.hl{max-width:92%}.btns{flex-direction:column;align-items:center;gap:14px}.btns .btn{width:min(300px,80vw)}.h2{min-height:100vw}.tag{max-width:86%}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.hl,.sub{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.hl,.sub,.scroll{opacity:1;transform:none}}
