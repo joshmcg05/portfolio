@@ -25,9 +25,10 @@ document.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>{document.qu
 const mas=document.querySelector('.mas');
 if(mas){const cb=[...document.querySelectorAll('.cats button')],gt=document.getElementById('gt'),gd=document.getElementById('gd');
  const a0=document.querySelector('.cats .on');gt.textContent=a0.dataset.t;gd.textContent=a0.dataset.d;
- cb.forEach(b=>b.onclick=()=>{cb.forEach(x=>x.classList.toggle('on',x==b));gt.textContent=b.dataset.t;gd.textContent=b.dataset.d;
-  mas.querySelectorAll('.g').forEach(g=>g.classList.toggle('h',b.dataset.f!='all'&&g.dataset.cat!=b.dataset.f))});
- const lb=document.createElement('div');lb.className='lb';lb.innerHTML='<div id="pn"></div><button class="cl" aria-label="Close"></button><button class="pv" aria-label="Previous"></button><img alt=""><button class="nx" aria-label="Next"></button>';document.body.append(lb);
+  const filt=f=>mas.querySelectorAll('.g').forEach(g=>g.classList.toggle('h',f=='all'?g.dataset.cat=='360':g.dataset.cat!=f));
+ cb.forEach(b=>b.onclick=()=>{cb.forEach(x=>x.classList.toggle('on',x==b));gt.textContent=b.dataset.t;gd.textContent=b.dataset.d;filt(b.dataset.f)});
+ filt('all');
+ const lb=document.createElement('div');lb.className='lb';lb.innerHTML='<div id="pn"></div><div class="hint">Drag to look around</div><div class="cp">&copy; 2026 Josh McGuigan</div><button class="cl" aria-label="Close"></button><button class="pv" aria-label="Previous"></button><img alt=""><button class="nx" aria-label="Next"></button>';document.body.append(lb);
  const sp=document.createElement('div');sp.className='sp';document.body.append(sp);sp.onclick=()=>close();
  const im=lb.querySelector('img');let list=[],k=0,vw=null;
  const show=n=>{if(!list.length)return;k=(n+list.length)%list.length;im.src=list[k].href};
