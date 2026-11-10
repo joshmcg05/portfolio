@@ -139,3 +139,13 @@ body[data-page=galleries]{background:#14171c}
 .lb .hint{top:26px;font:600 .95rem Inter,sans-serif;letter-spacing:.05em}
 .lb .cp{bottom:22px;font:400 .85rem Inter,sans-serif;opacity:.8}
 .lb.p .hint,.lb.p .cp{display:block}
+.h1{background:
+url(images/hero-1.jpg) center bottom/cover no-repeat,
+radial-gradient(45% 16% at 10% 36%,rgba(140,100,125,.6),transparent),
+radial-gradient(32% 12% at 30% 41%,rgba(205,165,105,.5),transparent),
+radial-gradient(55% 13% at 36% 56%,rgba(105,110,92,.65),transparent),
+radial-gradient(22% 9% at 80% 66%,rgba(195,205,220,.55),transparent),
+radial-gradient(14% 8% at 38% 64%,rgba(195,205,220,.4),transparent),
+radial-gradient(34% 22% at 8% 80%,rgba(48,40,26,.95),transparent),
+radial-gradient(12% 7% at 51% 77%,rgba(235,185,70,.4),transparent),
+linear-gradient(180deg,#05070f 0%,#090d1a 30%,#1a1c22 48%,#454538 60%,#3a2d1b 68%,#6a481d 82%,#8b6024 100%)}
