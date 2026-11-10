@@ -29,7 +29,7 @@ nav a:hover::after,nav a.on::after{transform:scaleX(1)}
 .scroll i{width:12px;height:12px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(45deg);animation:bob 1.8s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0) rotate(45deg)}50%{transform:translateY(8px) rotate(45deg)}}
 @keyframes in{to{opacity:1;transform:none}}
-.car{overflow:hidden;padding-bottom:36px}
+.car{overflow:hidden;padding-bottom:28px}
 .car{scroll-margin-top:90px}
 .trk{display:flex;transition:transform .9s var(--ease)}
 .sl{flex:0 0 auto;height:clamp(260px,40vw,75vh);background:linear-gradient(160deg,#243a6e,#0c1830)}
