@@ -92,3 +92,25 @@ footer svg{width:28px;height:28px;color:#fff;transition:color .3s}.fs a:hover sv
 .grid .rv:nth-child(3n+2){transition-delay:.12s}.grid .rv:nth-child(3n){transition-delay:.24s}
 @media(max-width:860px){.rt nav{position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;align-items:center;gap:26px;transform:translateX(100%);transition:transform .5s var(--ease)}.rt nav.o{transform:none}nav a{font-size:1.2rem}.soc{display:none}#tg{display:block;z-index:60}.split{grid-template-columns:1fr}.sec{padding:80px 5vw}.hl{max-width:92%}.btns{flex-direction:column;align-items:center;gap:14px}.btns .btn{width:min(300px,80vw)}.h2{min-height:100vw}.tag{max-width:86%}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.hl,.sub,.scroll{opacity:1;transform:none}}
+body[data-page=galleries]{background:#14171c}
+.gal{padding:150px 0 0}
+.gh{text-align:center;max-width:900px;margin:0 auto 50px;padding:0 5vw}
+.gh .t{font-style:normal;font-size:clamp(2.2rem,5vw,4rem)}
+.gh p{margin:0 auto}
+.cats{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 32px;margin-top:30px}
+.cats button{position:relative;background:none;border:0;padding:4px 0;color:#fff;font:400 .95rem Inter,sans-serif;cursor:pointer}
+.cats button::after{content:'';position:absolute;left:0;bottom:0;height:1px;width:100%;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.cats button:hover::after,.cats button.on::after{transform:scaleX(1)}
+.mas{columns:3 340px;column-gap:20px}
+.g{display:block;break-inside:avoid;margin-bottom:20px;min-height:220px;background:linear-gradient(160deg,#243a6e,#0c1830)}
+.g img{display:block;width:100%;height:auto}
+.g.h{display:none}
+.lb{position:fixed;inset:0;z-index:100;background:rgba(8,9,12,.96);display:none;align-items:center;justify-content:center}
+.lb.o{display:flex}
+.lb img{max-width:92vw;max-height:88vh;object-fit:contain}
+.lb button{position:absolute;top:50%;width:70px;height:90px;margin-top:-45px;border:0;background:none;cursor:pointer;font-size:0}
+.lb .pv{left:1vw}.lb .nx{right:1vw}
+.lb button::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-style:solid;opacity:.75;transition:opacity .3s}
+.lb .pv::before{border-width:11px 18px 11px 0;border-color:transparent #fff transparent transparent}
+.lb .nx::before{border-width:11px 0 11px 18px;border-color:transparent transparent transparent #fff}
+.lb button:hover::before{opacity:1}
