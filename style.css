@@ -114,3 +114,6 @@ body[data-page=galleries]{background:#14171c}
 .lb .pv::before{border-width:11px 18px 11px 0;border-color:transparent #fff transparent transparent}
 .lb .nx::before{border-width:11px 0 11px 18px;border-color:transparent transparent transparent #fff}
 .lb button:hover::before{opacity:1}
+.car{padding-bottom:0}
+.arr{margin-top:0;padding:22px 0}
+.intro{margin:90px auto}
