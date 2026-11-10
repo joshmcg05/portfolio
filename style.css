@@ -154,3 +154,4 @@ body[data-page=about]{background:#14171c}
 .ab .ph{max-width:380px;width:100%;margin:0 auto}
 .ab .t{font-style:normal;font-size:clamp(2rem,4.6vw,3.8rem);transform:skewX(-12deg);transform-origin:0 100%}
 @media(min-width:861px){.ab .split{grid-template-columns:minmax(0,380px) 1fr;max-width:1000px;gap:5vw}}
+.blank{display:inline-block;width:6em;border-bottom:2px solid currentColor}
