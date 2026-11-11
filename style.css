@@ -157,3 +157,13 @@ body[data-page=about]{background:#14171c}
 .blank{display:inline-block;width:6em;border-bottom:2px solid currentColor}
 .bt{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
 .btn.sm{padding:9px 24px;font-size:clamp(.8rem,1.2vw,.95rem);letter-spacing:.12em;margin-right:0}
+[hidden]{display:none!important}
+body[data-page=contact]{background:#14171c}
+.ct .wrap{max-width:640px}
+.ct form{max-width:none;margin-top:30px}
+.ct input,.ct textarea,.ct select{background:#1b1f27;border:1px solid rgba(255,255,255,.18);color:#fff;font:400 1rem Inter,sans-serif;color-scheme:dark}
+.ct ::placeholder{color:#8f98a8}
+.ct select:invalid{color:#8f98a8}
+.ct .ok p{font:600 clamp(1.2rem,2.3vw,1.7rem)/1.4 Inter,sans-serif;color:#fff;max-width:30ch;margin:30px 0}
+.ct #er{color:#ff9d9d}
+.btn.sm{padding:9px 24px;font-size:clamp(.8rem,1.2vw,.95rem);letter-spacing:.12em;margin:0}
