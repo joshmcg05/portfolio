@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contact | Josh McGuigan Photographer</title><meta name="description" content="Get in touch with Josh McGuigan.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;1,600&amp;family=Lexend:wght@400&amp;family=Playfair+Display+SC:ital,wght@0,700;1,400;1,700&amp;display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="style.css?v=6"></head>
+<body data-page="contact"><main>
+<section class="sec ab ct"><div class="wrap">
+<h1 class="t">Contact</h1>
+<p id="intro">Questions about prints, workshops, licensing or commissions? Send me a message below.</p>
+<form id="cf" action="https://formspree.io/f/YOUR_FORM_ID" method="post">
+<input name="name" placeholder="Name" required autocomplete="name">
+<input name="email" type="email" placeholder="Email" required autocomplete="email">
+<select name="topic" required><option value="" disabled selected>Subject</option><option>General inquiries</option><option>Workshops / tutoring</option><option>Commission / licensing</option><option>Other</option></select>
+<textarea name="message" rows="7" placeholder="Message" required></textarea>
+<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+<div class="bt" style="margin-top:6px"><button class="btn sm" type="submit"><span>Send message</span></button></div>
+<p id="er" hidden>Something went wrong sending that. Please try again, or email hello@joshmcguigan.nz directly.</p>
+</form>
+<div class="ok" id="ok" hidden><p>Thanks for reaching out! I will get back to you ASAP regarding your message.</p><a class="btn sm" href="index.html"><span>Back to home</span></a></div>
+</div></section>
+</main><script src="script.js"></script>
+<script>
+const f=document.getElementById('cf'),ok=document.getElementById('ok'),er=document.getElementById('er'),b=f.querySelector('button');
+f.addEventListener('submit',async e=>{e.preventDefault();er.hidden=true;b.disabled=true;
+ const d=new FormData(f);d.set('_subject','Website enquiry: '+d.get('topic'));
+ try{const r=await fetch(f.action,{method:'POST',body:d,headers:{Accept:'application/json'}});
+  if(!r.ok)throw 0;
+  f.hidden=true;document.getElementById('intro').hidden=true;ok.hidden=false;ok.scrollIntoView({block:'center'})}
+ catch(x){er.hidden=false;b.disabled=false}});
+</script></body></html>
