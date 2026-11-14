@@ -197,3 +197,9 @@ body[data-page=prints]{background:#14171c}
 .pr .gh p a{color:#fff;text-decoration:underline;text-underline-offset:3px;transition:color .3s}
 .pr .gh p a:hover{color:var(--ac)}
 .pm{scroll-margin-top:90px}
+body[data-page=blog]{background:#14171c}
+.bl{min-height:calc(100svh - 110px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:150px 5vw 80px}
+.bl .t{font-style:normal;font-size:clamp(2.2rem,5vw,4rem);transform:skewX(-12deg)}
+.bl p{margin:0 auto}
+.bl .bt{justify-content:center}
+.btn.sm{padding:9px 24px;font-size:clamp(.8rem,1.2vw,.95rem);letter-spacing:.12em;margin:0}
