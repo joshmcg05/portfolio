@@ -190,3 +190,6 @@ body[data-page=prints]{background:#14171c}
 .pd #er{color:#ff9d9d}
 .btn.sm{padding:9px 24px;font-size:clamp(.8rem,1.2vw,.95rem);letter-spacing:.12em;margin:0}
 @media(max-width:860px){.pd .split{grid-template-columns:1fr}.pd{padding-top:120px}}
+.pn{text-align:center;max-width:none;margin:50px auto 70px;padding:0 5vw}
+.pn a{color:#fff;text-decoration:underline;text-underline-offset:3px;transition:color .3s}
+.pn a:hover{color:var(--ac)}
