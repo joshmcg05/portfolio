@@ -193,3 +193,7 @@ body[data-page=prints]{background:#14171c}
 .pn{text-align:center;max-width:none;margin:50px auto 70px;padding:0 5vw}
 .pn a{color:#fff;text-decoration:underline;text-underline-offset:3px;transition:color .3s}
 .pn a:hover{color:var(--ac)}
+.pr .gh p{max-width:none;text-wrap:pretty}
+.pr .gh p a{color:#fff;text-decoration:underline;text-underline-offset:3px;transition:color .3s}
+.pr .gh p a:hover{color:var(--ac)}
+.pm{scroll-margin-top:90px}
