@@ -6,7 +6,8 @@
 <link rel="stylesheet" href="style.css?v=7"></head>
 <body data-page="prints"><main>
 <section class="pr"><div class="gh"><h1 class="t">Prints</h1><p>Fine art prints, available in a range of sizes. Select an image to enquire.</p></div>
-<div class="pm" id="pm"></div></section>
+<div class="pm" id="pm"></div>
+<p class="pn">Can’t find the image you want? Contact me <a href="contact">here</a> for custom requests.</p></section>
 </main><script src="script.js"></script><script src="prints.js"></script>
 <script>document.getElementById('pm').innerHTML=PRINTS.map(p=>`<a class="pi" href="print?p=${p.id}" aria-label="${p.title}"><img src="${p.img}" alt=""></a>`).join('')</script>
 </body></html>
