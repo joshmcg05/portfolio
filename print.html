@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Print | Josh McGuigan Photographer</title><meta name="description" content="Enquire about a fine art print by Josh McGuigan.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;1,600&amp;family=Lexend:wght@400&amp;family=Playfair+Display+SC:ital,wght@0,700;1,400;1,700&amp;display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="style.css?v=7"></head>
+<body data-page="prints"><main>
+<section class="pd"><div class="wrap split">
+<img class="pimg" id="pi" alt="">
+<div><h1 class="t" id="pt"></h1>
+<form id="pf" action="https://formspree.io/f/YOUR_FORM_ID" method="post">
+<select name="size" id="sz" required><option value="" disabled selected>Size</option><option>A4</option><option>A3</option><option>A2</option><option>A1</option><option>Custom request</option></select>
+<input name="custom_size" id="cs" placeholder="Custom size (e.g. 90 x 60 cm)" hidden>
+<select name="material" required><option value="" disabled selected>Material</option><option>Fine art lustre paper</option><option>Chromaluxe metal</option></select>
+<input name="name" placeholder="Name" required autocomplete="name">
+<input name="email" type="email" placeholder="Email" required autocomplete="email">
+<input name="location" placeholder="Location" required autocomplete="country-name">
+<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+<div class="bt" style="margin-top:6px"><button class="btn sm" type="submit"><span>Enquire now</span></button></div>
+<p id="er" hidden>Something went wrong sending that. Please try again, or email hello@joshmcguigan.nz directly.</p>
+</form>
+<div class="ok" id="ok" hidden><p>Thank you for your interest in purchasing a fine art print! I will be in contact shortly with a quote.</p></div>
+</div></div></section>
+</main><script src="script.js"></script><script src="prints.js"></script>
+<script>
+const p=PRINTS.find(x=>x.id==new URLSearchParams(location.search).get('p'));
+if(!p)location.replace('prints');else{
+ document.title=p.title+' | Josh McGuigan Photographer';
+ document.getElementById('pt').textContent=p.title;const im=document.getElementById('pi');im.src=p.img;im.alt=p.title;
+ const f=document.getElementById('pf'),ok=document.getElementById('ok'),er=document.getElementById('er'),b=f.querySelector('button'),cs=document.getElementById('cs');
+ document.getElementById('sz').onchange=e=>{const c=e.target.value=='Custom request';cs.hidden=!c;cs.required=c};
+ f.addEventListener('submit',async e=>{e.preventDefault();er.hidden=true;b.disabled=true;
+  const d=new FormData(f);d.set('print',p.title);d.set('_subject','Print enquiry: '+p.title+' ('+d.get('size')+', '+d.get('material')+')');
+  try{const r=await fetch(f.action,{method:'POST',body:d,headers:{Accept:'application/json'}});
+   if(!r.ok)throw 0;f.hidden=true;ok.hidden=false}
+  catch(x){er.hidden=false;b.disabled=false}})}
+</script></body></html>

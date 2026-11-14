@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prints | Josh McGuigan Photographer</title><meta name="description" content="Fine art prints by Josh McGuigan.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;1,600&amp;family=Lexend:wght@400&amp;family=Playfair+Display+SC:ital,wght@0,700;1,400;1,700&amp;display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="style.css?v=7"></head>
+<body data-page="prints"><main>
+<section class="pr"><div class="gh"><h1 class="t">Prints</h1><p>Fine art prints, available in a range of sizes. Select an image to enquire.</p></div>
+<div class="pm" id="pm"></div></section>
+</main><script src="script.js"></script><script src="prints.js"></script>
+<script>document.getElementById('pm').innerHTML=PRINTS.map(p=>`<a class="pi" href="print?p=${p.id}" aria-label="${p.title}"><img src="${p.img}" alt=""></a>`).join('')</script>
+</body></html>
